@@ -1,0 +1,124 @@
+{% extends "base/base_admin.html" %}
+{% block title %} View Product {% endblock title %}
+{%load static %}
+
+
+{% block content %}
+
+<section class="content-header">
+	<div class="container-fluid">
+	  <div class="row mb-2">
+		<div class="col-sm-6">
+		  <h1>เพิ่มสินค้า</h1>
+		</div>
+		<div class="col-sm-6">
+		  <ol class="breadcrumb float-sm-right">
+			<li class="breadcrumb-item"><a href="{% url 'store' %}">Home</a></li>
+			<li class="breadcrumb-item active">Modals &amp; Alerts</li>
+		  </ol>
+		</div>
+	  </div>
+	</div>
+	<!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+	<div class="callout callout-info">
+		<h5><i class="fas fa-info"></i> Note:</h5>
+		This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+	  </div>
+	<!-- Default box -->
+	<div class="card card-solid">
+		<div class="card-body">
+
+			<div class="row">
+				<!--Product Image show-->
+				<div class="col-12 col-sm-6">
+					<h3 class="d-inline-block d-sm-none">{{ product.name }}</h3> 
+					<div class="col-12">
+						{% if product.image %}
+						<img src="{{ product.image.url }}" class="product-img-container" alt="Product Image">
+						{% else %}
+						<img src="/media/product_images/image_product.jpg" class="product-img-container" alt="Product Image">
+						{%endif %}
+					</div>
+					<div class="col-12 product-image-thumbs">
+						<div class="product-image-thumb active"><img src="../../dist/img/prod-1.jpg" alt="Product Image"></div>
+						<div class="product-image-thumb"><img src="../../dist/img/prod-2.jpg" alt="Product Image"></div>
+						<div class="product-image-thumb"><img src="../../dist/img/prod-3.jpg" alt="Product Image"></div>
+						<div class="product-image-thumb"><img src="../../dist/img/prod-4.jpg" alt="Product Image"></div>
+						<div class="product-image-thumb"><img src="../../dist/img/prod-5.jpg" alt="Product Image"></div>
+					</div>
+				</div>
+				<!-- Product Descripstion -->
+				<div class="col-12 col-sm-6">
+					<h3 class="my-3">ชื่อสินค้า {{ product.name }}</h3>
+					<p> {{ product.name_en }} </p>
+					<hr>
+
+					<div class="card">
+						<div class="card-body">
+						<h3 class="card-title my-3">ส่วนประกอบ</h3>
+						<p class="card-text">{{ product.component }}</p>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-body">
+						<h3 class="card-title my-3">คุณประโยชน์</h3><br>
+						<p class="card-text">{{ product.profit }}</p>
+						</div>
+					</div>
+
+					<div class="bg-gray py-2 px-3 mt-4">
+						<h2 class="mb-0">฿{{ product.price }} / {{ product.unit }} </h2> 
+						<h4 class="mt-0">
+							<small> สต๊อกสินค้าวันที่ {{ product.date_time}} จำนวนคงเหลือ {{ product.quatity }} {{ product.unit}}</small>
+						</h4>
+					</div>
+
+					<div class="mt-4">
+						<a class="btn btn-warning btn-flat" href="{% url 'edit-product' product.id%}" ><i class="fas fa-bars"></i> แก้ใขข้อมูล</a>
+						<a class="btn btn-danger btn-flat" href="#" > <i class="fas fa-times"></i> ลบสินค้า </a>
+					</div>
+
+					<!-- Icon share -->
+					<div class="mt-4 product-share">
+						<a href="#" class="text-gray">
+							<i class="fab fa-facebook-square fa-2x"></i>
+						</a>
+						<a href="#" class="text-gray">
+							<i class="fab fa-twitter-square fa-2x"></i>
+						</a>
+						<a href="#" class="text-gray">
+							<i class="fas fa-envelope-square fa-2x"></i>
+						</a>
+						<a href="#" class="text-gray">
+							<i class="fas fa-rss-square fa-2x"></i>
+						</a>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<nav class="w-100">
+					<div class="nav nav-tabs" id="product-tab" role="tablist">
+						<a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" href="#product-desc" role="tab" aria-controls="product-desc" aria-selected="true">รายละเอียดอื่นๆ</a>
+						<a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false">Comments</a>
+						
+					</div>
+				</nav>
+				<div class="tab-content p-3" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab">{{ product.description }}</div>
+					<div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> Vivamus rhoncus nisl sed venenatis luctus. Sed condimentum risus ut tortor feugiat laoreet. Suspendisse potenti. Donec et finibus sem, ut commodo lectus. Cras eget neque dignissim, placerat orci interdum, venenatis odio. Nulla turpis elit, consequat eu eros ac, consectetur fringilla urna. Duis gravida ex pulvinar mauris ornare, eget porttitor enim vulputate. Mauris hendrerit, massa nec aliquam cursus, ex elit euismod lorem, vehicula rhoncus nisl dui sit amet eros. Nulla turpis lorem, dignissim a sapien eget, ultrices venenatis dolor. Curabitur vel turpis at magna elementum hendrerit vel id dui. Curabitur a ex ullamcorper, ornare velit vel, tincidunt ipsum. </div>
+				</div>
+			</div>
+		</div>
+	<!-- /.card-body -->
+	</div>
+	<!-- /.card -->
+</section>
+
+{% endblock content %}

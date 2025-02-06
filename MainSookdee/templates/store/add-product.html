@@ -1,0 +1,202 @@
+{% extends "base/base_admin.html" %}
+
+{% block title %} Add Product {% endblock title %}
+{%load static %}
+
+{% block content%}
+
+
+
+<section class="content-header">
+	<div class="container-fluid">
+	  <div class="row mb-2">
+		<div class="col-sm-6">
+		  <h1>Store สินค้า</h1>
+		</div>
+		<div class="col-sm-6">
+		  <ol class="breadcrumb float-sm-right">
+			<li class="breadcrumb-item"><a href="#">Store</a></li>
+			<li class="breadcrumb-item active">เพิ่มสินค้า</li>
+		  </ol>
+		</div>
+	  </div>
+	</div>
+	<!-- /.container-fluid -->
+</section>
+
+
+<section class="content">
+	<form method="post"  enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="callout callout-info">
+			<h5><i class="fas fa-info"></i> เพิ่มสินค้า</h5>
+			ลงทะเบียนสินค้าเข้าสู่คงคลัง ผู้ใช้ควรกรอกรายละเอียดสินค้าให้ครบเพื่อ การนำข้อมูลที่จำเป็นนำไปใช้ในการประมวลผล หรือ คำนวนค่าต่างๆต่อไป
+		</div>		
+		<!-- Default box -->
+
+		<div class="card card-solid">
+			<div class="card-body">
+				<div class="row">
+					<!--Product Image show-->
+					<div class="col-12 col-sm-6">
+						<h3 class="d-inline-block d-sm-none">รูปภาพสินค้า</h3>
+
+						<div class="col-12">
+							<!-- productImages -->
+							<div class="form-group">
+								<label for="productImages" class="form-label">อัพโหลดภาพสินค้า <span><code>รูปภาพขนาดที่เหมาะสม 500x500px</code></span></label>
+								<input type="file" id="productImages" name="productImages" class="form-control" multiple accept="product_images/*">
+								<small><li>การอัพโหลดข้อมูลรูปภาพ ผู้ใช้ควรอัพโหลดมากกว่า 1 ภาพสำหรับการแสดงผล เพื่อให้รายการแสดงสินค้าสำหรับลูกค้าได้เห็น สินค้าหลากหลายรูปแบบสำหรับตัดสินใจ</small>
+							</div>
+						</div>
+						<div class="col-12">
+							<!-- checkstock -->
+							<div class="form-group">
+								<div class="custom-control custom-switch custom-switch-off-dark custom-switch-on-success">
+									<input type="checkbox" class="custom-control-input" name="checkstock" value="True" id="customSwitch3" checked>
+									<label class="custom-control-label" for="customSwitch3" name="checkstock">เปิดสต๊อกสินค้า</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-12">
+							<div class="preview-container img" id="previewContainer"></div>
+						</div>
+
+					</div>
+
+					<!-- Product Descripstion -->
+					<div class="col-12 col-sm-6">
+						<!-- Name Product -->
+						<div class="row">
+							<div class="col-md-6 col-xs-6">
+								<div class="card">
+									<div class="card-body">
+										<!-- inputName th-->
+										<div class="form-group">
+											<label for="inputNameth">ชื่อสินค้า TH</label>
+											<input type="text" id="inputNameth" name="inputNameth" class="form-control" Required>
+											<small class="fw-border">ชื่อสินค้าภาษาไทย มีความสำหรับสำหรับการใช้งานตัวสินค้าชิ้นนี้</small>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6 col-xs-6">
+								<div class="card">
+									<div class="card-body">
+										<!-- inputName th-->
+										<div class="form-group">
+											<label for="inputNameen">ชื่อสินค้า En</label>
+											<input type="text" id="inputNameen" name="inputNameen" class="form-control" Required>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<hr>
+
+						<div class="row">
+							<div class="col-md-3">
+								<!-- inputCategory -->
+								<div class="form-group">
+									<label for="inputCategory">หมวดหมู่สินค้า</label>								
+									<select id="inputCategory" Required name= "inputCategory" class="form-control custom-select">
+									<option enabled="">เลือกหมวดหมู่</option>
+
+									{% for category in categorys %}							
+									<option>{{ category }}</option>
+									{% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<!-- inputPrice -->
+								<div class="form-group">
+									<label for="inputPrice">ราคา</label>
+									<input type="number" id="inputPrice" Required name="inputPrice" class="form-control" min="0" Required >
+								</div>
+							</div>
+							<div class="col-md-3">
+								<!-- inputQuantity -->
+								<div class="form-group">
+									<label for="inputQuantity">จำนวนสินค้า</label>
+									<input type="number" Required id="inputQuantity" name="inputQuantity" class="form-control" min="0" max="999" Required>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<!-- inputUnit -->
+								<div class="form-group">
+									<label for="inputUnit">หน่วยสินค้า </label>
+									<select id="inputUnit" Required name= "inputUnit" class="form-control custom-select">
+									<option enabled="">เลือกหน่วยสินค้า</option>
+									{% for unit in units %}						
+									<option>{{ unit }}</option>
+									{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<!-- input Comments-->
+							<div class="col-md-12">
+								<div class="card border-primary">   
+								<div class="card-body">
+									<div class="form-group">
+										<label for="inputComments">ส่วนประกอบ</label>
+										<textarea id="inputComments" name="inputComments" class="form-control" rows="4"></textarea>
+										<small class="text-warning"> ส่วนประกอบของสินค้า หรือ ผลิตภัณฑ์ เป็นการแสดงส่วนผสมของสินค้าหรือผลิตภัณฑ์นั้น</small>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<!-- input Profit -->
+							<div class="col-md-12">
+								<div class="card border-primary">
+								<div class="card-body">
+									<div class="form-group">
+										<label for="inputProfit">คุณประโยชน์</label>
+										<textarea id="inputProfit" name="inputProfit" class="form-control" rows="4"></textarea>
+										<small  class="text-warning">คำโปรยดึงดูดใจสำหรับลูกค้า</small>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<!-- input Descripstion -->
+					<div class="col-md-12">
+						<div class="card border-primary">
+						<div class="card-body">
+							<div class="form-group">
+								<label for="inputDescripstion">รายละเอียดอื่นๆ</label>
+								<textarea id="inputDescripstion" name="inputDescripstion" class="form-control" rows="4"></textarea>
+								<li><small>ช่องกรอกรายละเอียดอื่น ๆ เป็นส่วนสำคัญอย่างหนึ่งต่อการค้นหา</small>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- /.card-body -->
+
+			<div class="card-body">
+				<button type="submit" class="btn btn-outline-primary btn-lg btn-flat">บันทึกข้อมูลสินค้า</button>
+				
+			</div>
+		<!-- /.card -->
+		</div>
+	</form>
+	</div>
+</section>
+
+
+{% endblock %}

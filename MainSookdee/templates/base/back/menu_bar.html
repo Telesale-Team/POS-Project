@@ -1,0 +1,174 @@
+<nav class="mt-2">
+	<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+	<!-- Add icons to the links using the .nav-icon class
+			with font-awesome or any other icon font library -->
+			<li class="nav-item">
+				<a href="{% url 'dashboard' %}" class="nav-link active">
+					<i class="nav-icon fas fa-tachometer-alt"></i>
+				  <p> Dashboard </p>
+				</a>
+			  </li>
+
+			<li class="nav-item">
+				<a href="{% url 'pos' %}" class="nav-link">
+					<i class="nav-icon fas fa-th"></i>             
+					<p> โปรแกรมขายหน้าร้าน </p>
+				</a>
+			</li>
+
+			<li class="nav-item">
+				<a href="#" class="nav-link">
+					<i class="nav-icon fas fa-copy"></i>
+					<p>	จัดการการขาย<i class="fas fa-angle-left right"></i></p>
+				</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p>รายการขายทั้งหมด</p>
+						</a>
+					</li> 
+				</ul>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="pages/layout/top-nav.html" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p>คืนสินค้า</p>
+						</a>
+					</li> 
+				</ul>
+			</li>
+
+			<li class="nav-item">
+				<a href="#' %}" class="nav-link">
+					<i class="nav-icon fas fa-copy"></i>
+					<p> คลังสินค้า <i class="fas fa-angle-left right"></i>	</p>
+				</a>
+
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="{% url 'store' %}" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p>จัดการคลังสินค้า</p>
+						</a>
+					</li> 
+				</ul>
+
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p>หมวดหมู่สินค้า</p>
+						</a>
+					</li> 
+				</ul>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p>หน่วยนับสินค้า</p>
+						</a>
+					</li> 
+				</ul>
+			</li>
+
+			
+			<li class="nav-item">
+				<a href="#" class="nav-link">
+					<i class="nav-icon fas fa-copy"></i>
+					<p>	ตั้งค่าพื้นฐานการใช้งาน	<i class="fas fa-angle-left right"></i></p>
+				</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="{% url 'setting-general'%}" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p>ตั้งค่าทั่วไป</p>
+						</a>
+					</li> 
+				</ul>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p>ตั้งค่าหมวดหมู่สินค้า</p>
+						</a>
+					</li> 
+				</ul>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p> จัดการโฆษณา </p>
+						</a>
+					</li> 
+				</ul>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="far fa-circle nav-icon"></i>
+							<p> จัดการโฆษณา </p>
+						</a>
+					</li> 
+				</ul>
+			</li>       
+
+
+
+			<li class="nav-item">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-copy"></i>
+						<p>
+							จัดการพนักงาน
+							<i class="fas fa-angle-left right"></i>
+
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="pages/layout/top-nav.html" class="nav-link">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Top Navigation</p>
+							</a>
+						</li> 
+					</ul>
+			</li>
+			<li class="nav-item">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-copy"></i>
+						<p>
+							รายงาน
+							<i class="fas fa-angle-left right"></i>
+
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="pages/layout/top-nav.html" class="nav-link">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Top Navigation</p>
+							</a>
+						</li> 
+					</ul>
+			</li>
+			<li class="nav-item">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-copy"></i>
+						<p>
+							รายงานภาษี
+							<i class="fas fa-angle-left right"></i>
+
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="pages/layout/top-nav.html" class="nav-link">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Top Navigation</p>
+							</a>
+						</li> 
+					</ul>
+			</li>
+
+
+	</ul>
+</nav>

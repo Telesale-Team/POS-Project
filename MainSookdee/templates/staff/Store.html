@@ -1,0 +1,127 @@
+{% extends "base/back/base_admin.html" %}
+{% block title %} Store Product {% endblock title %}
+{%load static %}
+
+{% block content%}
+
+<section class="content">
+	<div class="container-fluid">
+		<h2 class="text-center display-4">ค้นหาข้อมูลสินค้า</h2>
+		<div class="row">
+			<div class="col-md-12">
+				<form action="simple-results.html">
+					<div class="input-group">
+						<input type="search" class="form-control form-control-lg" placeholder="ป้อนชื่อสินค้าที่ต้องการค้นหา...">
+						<div class="input-group-append">
+							<button type="submit" class="btn btn-lg btn-default">
+								<i class="fa fa-search"></i>
+							</button>
+						</div>						
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<br>
+
+<section class="content">
+	<div class="container-fluid">
+	  	<div class="row">
+			<div class="col-12">
+				<div class="card">			
+					<div class="card-header">
+						<h3 class="card-title">ตารางข้อมูลสินค้า</h3>
+						<a href="#"><button type="button" class="btn btn-outline-success float-right" ><i class="fas fa-plus"> </i> เพิ่มสินค้า</button></a>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body">
+						<!-- Table Data -->
+						<div class="row">
+							<div class="col-sm-12">
+								<table id="example1" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example2_info">
+									<thead>						
+										<tr>
+											<th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="descending" aria-label="Rendering engine: activate to sort column descending">#</th>
+											<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">รูป</th>
+											<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">หมวดหมู่</th>
+											<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">ชื่อสินค้า</th>
+											<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">คุณประโยชน์</th>
+											<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="">ราคาขาย</th>
+											<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="">ราคาต้นทุน</th>
+											<th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">จำนวนคงเหลือ</th>
+
+										</tr>
+									</thead>
+
+									<tbody>
+										{% for product in products %}
+										<tr class="odd">
+											<td>{{ forloop.counter }}</td>
+											{% if product.image %}
+											<td class="dtr-control sorting_1" tabindex="0"> <img src="{{product.image.url }}" class="img-fluid" alt="" width="30" height="20"></td>
+											{% else %}
+											<td class="dtr-control sorting_1" tabindex="0"> <img src="/media/product_images/image_product.jpg" class="img-fluid" alt="" width="30" height="20"></td>
+											{%endif %}
+											<td>
+												{% if product.category.name == 'แซนวิด'%}
+													<small class="badge badge-warning"><i class="far fa-clock"></i> {{ product.category }}</small>
+												{% elif product.category.name == 'น้ำผัก'%}
+													<small class="badge badge-success"><i class="far fa-clock"></i> {{ product.category }}</small>
+												{% elif product.category.name == 'น้ำผลไม้'%}
+													<small class="badge badge-info"><i class="far fa-clock"></i> {{ product.category }}</small>
+												{% else%}
+													<small class="badge badge-default"><i class="far fa-clock"></i> {{ product.category }}</small>
+												{% endif %}											
+											</td>
+
+											<td><a href="{% url 'view-product' product.id %}">{{product.id }} {{ product.name }} {{ product.name_en}}</a></td>
+											<td> {{ product.profit | truncatechars:80}}</td>
+											<td > {{ product.price }}</td>
+											<td > {{ product.price }} </td>
+											<td> {{ product.quatity }} {{ product.unit }}</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- Pagination-->			
+			
+						<div class="row">
+							<div class="col-sm-12 col-md-5">
+								<div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+							</div>
+
+							<div class="col-sm-12 col-md-7">
+								<div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+									<ul class="pagination">
+										<li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+										<li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+										<li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
+										<li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
+										<li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
+										<li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
+										<li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
+										<li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+			<!-- /.col -->
+	  	</div>
+	  	<!-- /.row -->
+	</div>
+	<!-- /.container-fluid -->
+
+</section>
+
+
+{% endblock content%}

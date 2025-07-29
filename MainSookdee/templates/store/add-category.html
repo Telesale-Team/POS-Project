@@ -1,0 +1,149 @@
+{% extends "base/back/base_admin.html" %}
+
+{% block title %} Create Category Manager Page {% endblock title %}
+{%load static %}
+
+
+{% block content%}
+
+<section class="content-header">
+	<div class="container-fluid">
+	  <div class="row mb-2">
+
+		<div class="col-sm-6">
+			<h1> เพิ่มหมวดหมู่ </h1>
+		</div>
+		<div class="col-sm-6">
+		  <ol class="breadcrumb float-sm-right">
+			<li class="breadcrumb-item"><a href="#">Home</a></li>
+			<li class="breadcrumb-item active">Create Category Managment</li>
+		  </ol>
+		</div>
+	  </div>
+	</div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				{% if messages %}
+					{% for message in messages %}
+						{% if message.tags == 'error' %}
+						<div class="card-body">
+							<div class="alert alert-danger alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h5><i class="icon fas fa-check"></i> ลบข้อมูล !</h5>
+								{{ message }}
+							</div>
+						</div>	
+						{% endif %}
+						{% if message.tags == 'warning' %}
+						<div class="card-body">
+							<div class="alert alert-warning alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h5><i class="icon fas fa-check"></i> บันทึก และ แก้ไขข้อมูล </h5>
+								{{ message }}
+							</div>
+						</div>
+						{% endif %}
+						{% if message.tags == 'info' %}
+							<button type="button" class="btn btn-info toastrDefaultInfo">	Launch Info Toast  </button>
+						{% endif %}
+		
+						{% if message.tags == 'success' %}
+							<div class="card-body">
+								<div class="alert alert-success alert-dismissible">
+									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+									<h5><i class="icon fas fa-check"></i> เพิ่มข้อมูล!</h5>
+									{{ message }}
+								</div>
+							</div>					
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+				<div class="card card-primary">
+					<div class="card-header">
+					  <h3 class="card-title"> <i class="bi bi-pencil"></i> กรอกรายละเอียด </h3>
+					</div>
+					<!-- /.card-header -->
+					<!-- form start -->
+					<form  action="{% url 'create-category' %}" method="post"  enctype="multipart/form-data">					 
+					{% csrf_token %}
+						<div class="card-body">
+								<!-- ส่วนแสดงรูปภาพปัจจุบัน (ถ้ามี) -->
+							
+							<div class="mt-2">
+								<img id="preview-image" src="#" alt="New preview"
+									 style="max-width: 100px; display: none; border: 1px solid #ddd; padding: 5px;">
+							</div>
+
+							<div class="form-group">
+								<label for="image">รูปภาพหมวดหมู่สินค้า</label>
+								<div class="input-group">
+								  <div class="custom-file">
+									<input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+									<label class="custom-file-label" for="image"></label>
+								  </div>								  
+								  <div class="input-group-append">
+									<span class="input-group-text">Upload</span>
+								  </div>
+								</div>								
+							</div>
+
+							<div class="form-group">
+								<label for="name-category">ชื่อหมวดหมู่</label>
+								<input type="text" class="form-control" id="name-category" placeholder='เช่น หมวดหมู่ สินค้ามาใหม่'  name="name-category" required>
+							</div>
+
+							<div class="form-group">
+								<label for="description">รายละเอียดหมวดหมู่</label>
+								<textarea id="description" class="form-control" rows="4" placeholder='เช่น หมวดหมู่สินค้านี้ เป็นสินค้าสิ้นเปลืองใช้แล้วหมดไป ' name="description" ></textarea>
+							</div>	
+
+                            <div class="form-group">
+                                <label>แสดงผลหน้าจอ</label>
+								
+                                <select class="form-control">
+                                  <option value="True">เปิดการใช้งาน</option>
+                                  <option value="False">ปิดการใช้งาน</option>
+                                </select>
+								
+                            </div>
+							<div class="row">   
+
+    
+								<!-- ปุ่มบันทึก / ยกเลิก -->
+								<div class="col-md-12 mt-4">
+			
+									<button type="submit" class="btn btn-primary" name='save'><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล</button>
+									<button type="submit" class="btn btn-primary" name='save-add'><i class="bi bi-file-earmark-plus"></i> บันทึก และ เพิ่มข้อมูลใหม่ </button>
+									<button type="submit" class="btn btn-primary" name='save-edit'><i class="bi bi-pencil-square"></i> บันทึก และ แก้ใขข้อมูล </button>
+									<a href="{{ request.META.HTTP_REFERER }}" type="button" class="btn btn-default float-right"><i class="bi bi-x-circle"></i> ยกเลิก </a>
+							  
+								</div>
+
+
+						</div>
+					</form>
+
+			</div>
+		<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container-fluid -->
+</section>
+
+
+<script>
+	document.getElementById("image").addEventListener("change", function(event) {
+		const [file] = this.files;
+		if (file) {
+			const preview = document.getElementById("preview-image");
+			preview.src = URL.createObjectURL(file);
+			preview.style.display = "block";
+		}
+	});
+</script>
+{% endblock %}

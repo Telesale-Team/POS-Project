@@ -1,0 +1,55 @@
+{% extends "base/pos/base-pos.html" %}
+{%load static %}
+{% block title %}
+
+<title> Menu Page </title>
+{% endblock %}
+
+{% block cardcontent %}
+
+{% for category in categorys %}
+
+<div class="card card-dark">
+    <div class="card-header">
+      <h3 class="card-title">{{ category.name }}</h3>
+
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+    </div>
+    <!-- /.card-header -->    
+     {% for stock in stock_product %}
+     {% if stock.product.category.id == category.id%}
+     
+    <div class="card-body p-0">
+      <ul class="products-list product-list-in-card pl-2 pr-2">
+        <li class="item">
+          {% for img in image_products %}
+          {% if img.product.id == stock.product.id and img.is_primary == 1 %}
+          <div class="product-img"> <img src="{{ img.image.url }}"  alt="Product Image" class="img-size-50"> </div>
+          {% endif %}
+          {% endfor %}          
+          <div class="product-info">
+            <a href="javascript:void(0)" class="product-title">{{ stock.product.name }}
+              <span class="badge badge-warning float-right">${{ stock.product.price }}</span></a>
+            <span class="product-description">
+              {{ stock.product.description }}
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- /.card-body -->
+     {% endif %}
+     {% endfor %}
+    <div class="card-footer text-center">
+      <a href="javascript:void(0)" class="uppercase">View All Products</a>
+    </div>
+    <!-- /.card-footer -->
+     
+</div>
+{% endfor %}
+
+{% endblock cardcontent %}

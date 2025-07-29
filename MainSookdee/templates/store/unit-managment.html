@@ -1,0 +1,126 @@
+{% extends "base/back/base_admin.html" %}
+
+{% block title %} Unit Manager Page {% endblock title %}
+{%load static %}
+
+{% block content%}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<div class="container-fluid">
+	  <div class="row mb-2">
+
+		<div class="col-sm-12">
+		  <ol class="breadcrumb float-sm-right">
+			<li class="breadcrumb-item"><a href="#">Home</a></li>
+			<li class="breadcrumb-item active">Unit Manager Page</li>
+		  </ol>
+		</div>
+	  </div>
+	</div>
+</section>
+
+<section class="content">
+	<div class="container-fluid">
+		
+		{% if messages %}
+			{% for message in messages %}
+				{% if message.tags == 'error' %}
+				<div class="card-body">
+					<div class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+
+						{{ message }}
+					</div>
+				</div>	
+				{% endif %}
+				{% if message.tags == 'warning' %}
+				<div class="card-body">
+					<div class="alert alert-warning alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+
+						{{ message }}
+					</div>
+				</div>
+				{% endif %}
+				{% if message.tags == 'info' %}
+					<button type="button" class="btn btn-info toastrDefaultInfo">	Launch Info Toast  </button>
+				{% endif %}
+
+				{% if message.tags == 'success' %}
+					<div class="card-body">
+						<div class="alert alert-success alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+
+							{{ message }}
+						</div>
+					</div>					
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title"> ตารางแสดงหน่วยสินค้า </h3>
+			
+						<div class="card-tools">
+							<ul class="nav nav-pills ml-auto">
+								<li class="nav-item">
+								<a class="nav-link active" href="{% url 'create-unit' %}"> <i class="fa fa-plus-circle"></i> เพิ่มใหม่</a>
+								</li>
+							</ul>
+						</div>
+			
+					</div>
+			
+					<div class="card-body">
+						<table id="example1" class="table table-bordered table-striped">
+							<thead>					
+								<tr>
+									<th> ชื่อ </th>
+									<th > จัดการ </th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for unit in unit_data %}
+								
+									<tr>
+										<td><a href="{% url 'view-unit' unit.pk %}"> {{ unit.name }} </a></td>
+										<td class="project-actions text-right"> 
+											<a type='button' class="btn btn-info" href="{% url 'view-unit' unit.pk %}" ><i class="fas fa-eye"></i></a>											
+											<a type='button' class="btn btn-danger"  data-toggle="modal" data-target="#modal-delete{{unit.id}}" ><i class="fas fa-trash"></i></a>
+										</td>
+									</tr>
+									<div class="modal fade" id="modal-delete{{unit.id}}">
+										<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header bg-danger">
+												<h4>คุณต้องการลบข้อมูล ?</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											</div>
+											<div class="modal-body">
+												<p><code>หน่วยสินค้า </code><b> {{ unit.name }} <code> ออกจากระบบ </code></p>					
+											</div>
+											<div class="modal-footer justify-content-between">
+												<a href="{% url 'delete-unit' unit.id %}" type="button" class="btn btn-danger"><i class="bi bi-floppy"></i>  &nbsp; ยืนยันลบข้อมูล </a>
+												<button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+												
+											</div>
+										</div>
+										</div>
+									</div>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>	
+				</div>
+			</div>
+		</div>
+				
+
+	</div>
+</section>
+
+{% endblock content%}

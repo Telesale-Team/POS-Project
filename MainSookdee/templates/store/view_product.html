@@ -1,124 +1,241 @@
-{% extends "base/base_admin.html" %}
+{% extends "base/back/base_admin.html" %}
+
 {% block title %} View Product {% endblock title %}
-{%load static %}
+{% load static %}
 
-
-{% block content %}
-
+{% block content%}
+<!-- Content Header (Page header) -->
 <section class="content-header">
 	<div class="container-fluid">
 	  <div class="row mb-2">
 		<div class="col-sm-6">
-		  <h1>เพิ่มสินค้า</h1>
+		  <h1><small><b>ชื่อสินค้า</b></small> &nbsp; {{ product.name }} </h1>
 		</div>
 		<div class="col-sm-6">
 		  <ol class="breadcrumb float-sm-right">
-			<li class="breadcrumb-item"><a href="{% url 'store' %}">Home</a></li>
-			<li class="breadcrumb-item active">Modals &amp; Alerts</li>
+			<li class="breadcrumb-item"><a href="{% url 'product-managment'%}">Home</a></li>
+			<li class="breadcrumb-item active"> View Product </li>
 		  </ol>
 		</div>
 	  </div>
-	</div>
-	<!-- /.container-fluid -->
+	</div><!-- /.container-fluid -->
 </section>
-
 
 <section class="content">
-	<div class="callout callout-info">
-		<h5><i class="fas fa-info"></i> Note:</h5>
-		This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
-	  </div>
-	<!-- Default box -->
-	<div class="card card-solid">
-		<div class="card-body">
-
-			<div class="row">
-				<!--Product Image show-->
-				<div class="col-12 col-sm-6">
-					<h3 class="d-inline-block d-sm-none">{{ product.name }}</h3> 
-					<div class="col-12">
-						{% if product.image %}
-						<img src="{{ product.image.url }}" class="product-img-container" alt="Product Image">
-						{% else %}
-						<img src="/media/product_images/image_product.jpg" class="product-img-container" alt="Product Image">
-						{%endif %}
-					</div>
-					<div class="col-12 product-image-thumbs">
-						<div class="product-image-thumb active"><img src="../../dist/img/prod-1.jpg" alt="Product Image"></div>
-						<div class="product-image-thumb"><img src="../../dist/img/prod-2.jpg" alt="Product Image"></div>
-						<div class="product-image-thumb"><img src="../../dist/img/prod-3.jpg" alt="Product Image"></div>
-						<div class="product-image-thumb"><img src="../../dist/img/prod-4.jpg" alt="Product Image"></div>
-						<div class="product-image-thumb"><img src="../../dist/img/prod-5.jpg" alt="Product Image"></div>
-					</div>
-				</div>
-				<!-- Product Descripstion -->
-				<div class="col-12 col-sm-6">
-					<h3 class="my-3">ชื่อสินค้า {{ product.name }}</h3>
-					<p> {{ product.name_en }} </p>
-					<hr>
-
-					<div class="card">
-						<div class="card-body">
-						<h3 class="card-title my-3">ส่วนประกอบ</h3>
-						<p class="card-text">{{ product.component }}</p>
-						</div>
-					</div>
-
-					<div class="card">
-						<div class="card-body">
-						<h3 class="card-title my-3">คุณประโยชน์</h3><br>
-						<p class="card-text">{{ product.profit }}</p>
-						</div>
-					</div>
-
-					<div class="bg-gray py-2 px-3 mt-4">
-						<h2 class="mb-0">฿{{ product.price }} / {{ product.unit }} </h2> 
-						<h4 class="mt-0">
-							<small> สต๊อกสินค้าวันที่ {{ product.date_time}} จำนวนคงเหลือ {{ product.quatity }} {{ product.unit}}</small>
-						</h4>
-					</div>
-
-					<div class="mt-4">
-						<a class="btn btn-warning btn-flat" href="{% url 'edit-product' product.id%}" ><i class="fas fa-bars"></i> แก้ใขข้อมูล</a>
-						<a class="btn btn-danger btn-flat" href="#" > <i class="fas fa-times"></i> ลบสินค้า </a>
-					</div>
-
-					<!-- Icon share -->
-					<div class="mt-4 product-share">
-						<a href="#" class="text-gray">
-							<i class="fab fa-facebook-square fa-2x"></i>
-						</a>
-						<a href="#" class="text-gray">
-							<i class="fab fa-twitter-square fa-2x"></i>
-						</a>
-						<a href="#" class="text-gray">
-							<i class="fas fa-envelope-square fa-2x"></i>
-						</a>
-						<a href="#" class="text-gray">
-							<i class="fas fa-rss-square fa-2x"></i>
-						</a>
-					</div>
-
-				</div>
-			</div>
-
-			<div class="row mt-4">
-				<nav class="w-100">
-					<div class="nav nav-tabs" id="product-tab" role="tablist">
-						<a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" href="#product-desc" role="tab" aria-controls="product-desc" aria-selected="true">รายละเอียดอื่นๆ</a>
-						<a class="nav-item nav-link" id="product-comments-tab" data-toggle="tab" href="#product-comments" role="tab" aria-controls="product-comments" aria-selected="false">Comments</a>
+    <form action="{% url 'create-product' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}    
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">แก้ใข/เพิ่มเติมข้อมูลสินค้า</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- รหัสสินค้า -->
+					<div class="col-6 col-md-12 col-sm-12">
+						<p class="float-right"> อัพเดดข้อมูลล่าสุดเมื่อ <code> {{ product.updated_at }}</code> </p>
+						<div class="form-group">
+							<label>รหัสสินค้า </label> 
+							<input type="number" name="product_id" class="form-control" readonly="" value={{ product.id }}>
+						</div>				
 						
 					</div>
-				</nav>
-				<div class="tab-content p-3" id="nav-tabContent">
-					<div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab">{{ product.description }}</div>
-					<div class="tab-pane fade" id="product-comments" role="tabpanel" aria-labelledby="product-comments-tab"> Vivamus rhoncus nisl sed venenatis luctus. Sed condimentum risus ut tortor feugiat laoreet. Suspendisse potenti. Donec et finibus sem, ut commodo lectus. Cras eget neque dignissim, placerat orci interdum, venenatis odio. Nulla turpis elit, consequat eu eros ac, consectetur fringilla urna. Duis gravida ex pulvinar mauris ornare, eget porttitor enim vulputate. Mauris hendrerit, massa nec aliquam cursus, ex elit euismod lorem, vehicula rhoncus nisl dui sit amet eros. Nulla turpis lorem, dignissim a sapien eget, ultrices venenatis dolor. Curabitur vel turpis at magna elementum hendrerit vel id dui. Curabitur a ex ullamcorper, ornare velit vel, tincidunt ipsum. </div>
-				</div>
-			</div>
-		</div>
-	<!-- /.card-body -->
-	</div>
-	<!-- /.card -->
+
+					<!-- อัปโหลดภาพสินค้า -->
+					<div class="col-6 col-md-12 col-sm-12">                      
+
+                        <code> ตัวอย่างภาพสินค้า</code><hr>
+
+                        <div class="mt-2">
+                            <img id="preview-image" src="#" alt="New preview" style="max-width: 100px; display: none; border: 1px solid #ddd; padding: 5px;">				
+                        </div>
+                        {% if product.image_product %}
+                        <img src="{{ product.image_product.url }}" class="" style="max-width: 100px; border: 1px solid #ddd; padding: 5px;" alt="">
+                        {% else %}
+                        <img src="{% static 'organic/images/images.png' %}" class="" style="max-width: 100px; border: 1px solid #ddd; padding: 5px;" alt="">
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label for="image">อัพโหลดภาพตัวอย่างหมวดหมู่</label>								
+                            <div class="input-group">
+                              <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+                                <label class="custom-file-label" for="image" >{{ product.image_product.name }}</label>
+                              </div>
+                              <div class="input-group-append">
+                                <span class="input-group-text">Upload</span>
+                              </div>
+                            </div>
+                            <small> ขนาดของรูปภาพที่เหมาะสมสำหรับอัพโหลดเป็นภาพ ตัวอย่างของหมวดหมู่สินค้าควรมีขนาดไม่เกิน <b> 24x24 </b> pixel </small>
+                        </div>                     
+
+					</div>
+					
+                    <!-- หมวดหมู่สินค้า -->
+					<div class="col-6 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label for="category">หมวดหมู่สินค้า <code>ข้อมูลจำเป็น</code></label>
+                            <select id="category" name="category" class="form-control custom-select" required>
+                                <option value="{{ product.category.id }}">{% if product.category%} {{ product.category }} {% else%} <p>กรอกข้อมูลหมวดหมูสินค้า</p>{% endif %}</option>
+                                {% for cat in categorys %}
+                                    <option value="{{ cat.id }}" > {{ cat.name }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+					</div>
+
+                    <!-- ชื่อสินค้า -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="name">ชื่อสินค้า <code>ข้อมูลจำเป็น</code> </label>
+                            <input type="text" id="name" name="name" class="form-control" value="{{ product.name }}" required>
+                        </div> 
+                    </div>
+
+                    <!-- ผู้จำหน่ายสินค้า  -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="supplier">ซัมพลายเออร์</label>
+                            <select id="supplier" name="supplier" class="form-control custom-select">
+                                <option value="{{product.supplier.id}} "> {{ product.supplier }} </option>
+                                {% for sub in suppliers %}
+                                    <option value="{{ sub.id }}">{{ sub.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ราคาซื้อสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="price">ราคาซื้อ </label>
+                            <input type="number"  value="{{ product.price }}" step="1" id="price" name="price" class="form-control" min="0"  required>
+                        </div>
+                    </div>
+
+                    <!-- ราคาขายสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="saleprice">ราคาขาย lv1</label>
+                            {%if product.cost == 0 %}
+                            <input type="number" value="{{ product.price }}" id="saleprice" name="saleprice" class="form-control" min="0"  required>
+                            {% else %}
+                            <input type="number" value="{{ product.cost }}" id="saleprice" name="saleprice" class="form-control" min="0"  required>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- จำนวนสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="stock_quantity">จำนวนสต๊อกสินค้า</label>
+                            <input type="number" value="{{ product.stock_quantity }}" id="stock_quantity" name="stock_quantity" class="form-control" min="0" required>
+                        </div>
+                    </div>
+
+                    <!-- หน่วยสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="unit">หน่วยสินค้า </label>
+                            <select id="unit" name="unit" class="form-control custom-select" required> 
+                                <option value="{{product.unit.id}}">{% if product.unit%} {{product.unit }}{% else %}<p>เลือกหน่วยสินค้า</p>{%endif%}</option>                                
+                                    {% for u in units %}
+                                    <option value="{{ u.id }}">{{ u.name }}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Check data -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="check_data">แสดงสินค้าหน้าร้าน</label>
+                            <select class="custom-select rounded-0" id="check_data" name="check_data" required>
+                                <option value="{{ product.check_data }}"> {% if product.check_data == True %} โชว์สินค้าหน้าร้าน {% else %} ปิดการแสดงสินค้า {% endif %} </option>  
+                                <option value='True'>โชว์สินค้าหน้ารา้น</option>
+                                <option value="False">ปิดการแสดงสินค้า</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- จำนวนแจ้งเตือนขั้นต่ำ -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="reorder_level"> จำนวนแจ้งเตือนขั้นต่ำ </label>
+                            <input type="number"  placeholder="ระบุจำนวนการแจ้งเตือน" step="1" id="reorder_level" name="reorder_level" class="form-control" min="0" >
+                        </div>
+                    </div>
+                    
+                    <!-- รายละเอียดสินค้า -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="description">รายละเอียดสินค้า</label>
+                            <textarea id="description" value="{{ product.description }}" name="description" class="form-control" rows="10">{{ product.description|default_if_none:'' }}</textarea>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">  
+                    <!-- ปุ่มบันทึก / ยกเลิก -->
+                    <div class="col-md-12 mt-4">
+                        <button type="submit" class="btn btn-primary" name='save'><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล</button>
+                        <button type="submit" class="btn btn-primary" name='save-add'><i class="bi bi-journal-plus"></i> บันทึก และ เพิ่มข้อมูลใหม่ </button>
+                        <button type="submit" class="btn btn-primary" name='save-edit'><i class="bi bi-pencil-square"></i> บันทึก และ แก้ใขข้อมูล </button>
+                        <a href="{{ request.META.HTTP_REFERER }}" type="button" class="btn btn-default "></i> ยกเลิก </a>
+                        <button type="button" class="btn btn-danger float-right" name='delete' data-toggle="modal" data-target="#modal-delete{{ product.id }}"><i class="bi bi-trash"></i>  &nbsp; ลบข้อมูลสินค้า {{product_id.id}}</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    
 </section>
 
-{% endblock content %}
+<div class="modal fade" id="modal-delete{{ product.id }}">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5>คุณต้องการลบข้อมูล ?</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<p> <code>ชื่อสินค้า :</code>  <b> {{product.name }} </b> </p>
+				{% if category_id.image_category %}
+					<img src="{{ category_id.image_category.url }}" style="max-width: 100px; border: 1px solid #ddd; padding: 5px;">
+				{% else %}
+					<img src="{% static 'organic/images/category-thumb-8.jpg' %}" style="max-width: 100px; border: 1px solid #ddd; padding: 5px;">
+				{% endif %}
+			{% if products %}
+				{% for product in products %}
+					<p> <i class="bi bi-check2-circle" style="color:red;" ></i> <a ><b> {{ product.name }} </b> </a></p>
+				{% endfor %}
+			{% endif %}
+
+
+		</div>
+		<div class="modal-footer justify-content-between">
+			<a href="{% url 'delete-product' product.id %}" type="button" class="btn btn-danger"> <i class="bi bi-trash"></i> ยืนยันลบข้อมูล</a>
+			<button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+			
+		</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+<script>
+	document.getElementById("image").addEventListener("change", function(event) {
+		const [file] = this.files;
+		if (file) {
+			const preview = document.getElementById("preview-image");
+			preview.src = URL.createObjectURL(file);
+			preview.style.display = "block";
+		}
+	});
+</script>
+  {% endblock %}

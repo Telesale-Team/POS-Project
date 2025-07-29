@@ -18,7 +18,7 @@ def Account_Profile(request):
 def Forgot_Password (request):
     return render(request,'account/forgot-password.html')
 
-def user_login(request):
+def User_login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -28,7 +28,7 @@ def user_login(request):
             return redirect('blogs')
     return render(request, 'account/login.html')
 
-def user_logout(request):
+def User_logout(request):
     logout(request)
     return redirect('login')
 

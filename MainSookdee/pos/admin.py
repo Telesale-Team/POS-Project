@@ -1,31 +1,18 @@
 from django.contrib import admin
-
-# Register your models here.
-from .models import Product, Customer, Order, OrderItem
-
-
-admin.site.site_header = 'POS Administration'
-admin.site.site_title = 'POS Administration'
-
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'price')
-
-
-class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('identity', 'name', 'balance')
-
+from .models import Order, OrderItem,Log
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'total_price', 'success', 'timestamp')
-    list_filter = ('success', 'timestamp')
+    list_display = ['customer', 'total_price','status','created_at']
+    search_fields = ['customer',"created_at"]
+    list_filter = ['customer','created_at']
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('order', 'timestamp', 'product')
-    list_filter = ('order', 'timestamp')
+    list_display = ['product','order', 'quantity','price']
+    search_fields = ['product','order']
+    list_filter = ['order']
 
+admin.site.register(Order,OrderAdmin)
+admin.site.register(OrderItem,OrderItemAdmin)
+admin.site.register(Log)
 
-admin.site.register(Product, ProductAdmin)
-admin.site.register(Customer, CustomerAdmin)
-admin.site.register(Order, OrderAdmin)
-admin.site.register(OrderItem, OrderItemAdmin)

@@ -20,6 +20,8 @@ from django.contrib.staticfiles.urls import static,staticfiles_urlpatterns
 from . import settings
 
 urlpatterns = [
+	# path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
+	# path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
 	path('dashboard/', include('dashboard.urls')),
@@ -27,6 +29,7 @@ urlpatterns = [
 	path('store/',include('store.urls')),
 	path('pos/',include('pos.urls')),
 	path('invoice/',include('invoice.urls')),
+	path('chatapp/',include('ChatApp.urls')),
 	
 ]
 if settings.DEBUG :

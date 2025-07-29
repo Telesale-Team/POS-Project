@@ -1,0 +1,106 @@
+{% extends "base/back/base_admin.html" %}
+{% block title %} Shop Manager Page{% endblock title %}
+{%load static %}
+
+{% block content%}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">สต๊อกสินค้าทั้งหมด</h3>
+                <div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'addshop' %}" type='button' class="nav-link active"> <i class="fa fa-plus-circle" aria-hidden="true"></i> เพิ่มสินค้าหน้าร้าน </a>
+                    </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>					
+                        <tr>
+                            <th>  </th>
+                            <th > ชื่อ </th>
+                            <th > ต้นทุน </th>
+                            <th > ราคาขาย </th>
+                            <th > จำนวน </th>
+                            <th >สถานะ </th>
+                            <th class="project-actions text-right"> จัดการ </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        
+                            <tr>
+                                <td> {{ product.category.name }} </td>
+                                <td> 
+                                    <a href="{% url 'view-product' product.id %}">
+                                        {%if product.image_product %}
+                                        <img src="{{ product.image_product.url }}" class="rounded" alt="{{ product.name }}" width="30" height="30"> &nbsp; {{ product.name }} &nbsp;
+                                        {% else %}
+                                        <i class="bi bi-image-fill"></i> &nbsp; {{ product.name }}
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td>  {{ product.price }} </td>
+                                <td>  {{ product.cost }} </td>
+                                <td>  {{ product.stock_quantity }} {{ product.unit }} </td>
+                                <td> 
+                                    <i class="bi bi-exclamation-diamond-fill" style="color:green;"></i>
+                                </td>
+                                
+                                <td class="project-actions text-right">
+                                    <a href="{% url 'view-product' product.pk %}" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                                    <a href="{% url 'delete-product' product.pk %}" type='button' class="btn btn-danger"  data-toggle="modal" data-target="#modal-delete{{product.id}}" ><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="modal-delete{{ product.id }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5>คุณต้องการลบข้อมูล ?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p> <code>ชื่อสินค้า :</code>  <b> {{product.name }} </b> </p>		
+                            
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <a href="{% url 'delete-product' product.id %}" type="button" class="btn btn-danger"> <i class="bi bi-trash"></i> ยืนยันลบข้อมูล</a>
+                                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                        
+                                    </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+
+
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th> หมวดหมู่ </th>
+                            <th > ชื่อ </th>
+                            <th > ต้นทุน </th>
+                            <th > ราคาขาย </th>
+                            <th > จำนวน </th>
+                            <th >สถานะ </th>
+                            <th class="project-actions text-right"> จัดการ </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+</div>
+{% endblock content%}

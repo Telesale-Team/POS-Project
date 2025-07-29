@@ -1,0 +1,126 @@
+{% extends "base/back/base_admin.html" %}
+
+{% block title %} View Unit Manager Page {% endblock title %}
+{%load static %}
+
+
+{% block content%}
+<section class="content-header">
+	<div class="container-fluid">
+	  <div class="row mb-2">
+        <div class="col-sm-6">
+            <h4 class="card-title"></h4>
+        </div>
+		<div class="col-sm-6">
+		  <ol class="breadcrumb float-sm-right">
+			<li class="breadcrumb-item"><a href="#">Home</a></li>
+			<li class="breadcrumb-item active">Category Managment</li>
+		  </ol>
+		</div>
+	  </div>
+	</div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+	<div class="container-fluid">
+		{% if messages %}
+			{% for message in messages %}
+				{% if message.tags == 'error' %}
+				<div class="card-body">
+					<div class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						<h5><i class="icon fas fa-check"></i> ลบข้อมูล !</h5>
+						{{ message }}
+					</div>
+				</div>	
+				{% endif %}
+				{% if message.tags == 'warning' %}
+				<div class="card-body">
+					<div class="alert alert-warning alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						{{ message }}
+					</div>
+				</div>
+				{% endif %}
+				{% if message.tags == 'info' %}
+					<button type="button" class="btn btn-info toastrDefaultInfo">	Launch Info Toast  </button>
+				{% endif %}
+
+				{% if message.tags == 'success' %}
+					<div class="card-body">
+						<div class="alert alert-success alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+
+							{{ message }}
+						</div>
+					</div>					
+				{% endif %}
+			{% endfor %}
+		{% endif %}	
+		<div class="row">            
+			<div class="col-12">
+				<div class="card card-primary">
+					<div class="card-header">
+					  <h3 class="card-title"> แก้ใขข้อมูล <i class="bi bi-pencil"></i> </h3>
+					</div>
+					<!-- /.card-header -->
+					<!-- form start -->
+					<form  action="{% url 'unit-managment' %}" method="post" enctype="multipart/form-data">					 
+					{% csrf_token %}
+						<div class="card-body">
+							<input type="hidden" id="unit_id" name="unit_id" value="{{ unit.id }}">
+                            <div class="form-group">
+								<label for="name">ชื่อหน่วยนับ </label>
+								<input type="text" class="form-control" id="name"  name="name" value="{{ unit }}" required>
+							</div>
+
+							<button type="submit" class="btn btn-primary" name='save'><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล</button>
+							<button type="submit" class="btn btn-outline-primary" name='save-edit'> <i class="bi bi-pencil-square"></i> บันทึก/แก้ใขข้อมูล </button>
+							<button type="submit" class="btn btn-outline-primary" name='save-add'> <i class="bi bi-file-earmark-plus"></i> บันทึก/สร้างใหม่ </button>							
+							<a href="{{ request.META.HTTP_REFERER }}" type="button" class="btn btn-default"><i class="bi bi-x-circle"></i> ยกเลิก </a>
+							<button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#modal-delete" ><i class="bi bi-trash"></i> ลบข้อมูล </button>
+						</div>
+					</form>
+
+			</div>
+		<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container-fluid -->
+</section>
+
+<div class="modal fade" id="modal-delete">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header bg-danger">
+			<h4>คุณต้องการลบข้อมูล ?</h4>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		  </button>
+		</div>
+        <div class="modal-body">
+            <p><code>หน่วยสินค้า </code><b> {{ unit.name }} <code> ออกจากระบบ </code></p>				
+        </div>
+		<div class="modal-footer justify-content-between">
+		  <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+		  <a href="{% url 'delete-unit' unit.id %}" type="button" class="btn btn-danger"><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล </a>
+		</div>
+	  </div>
+	  <!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+
+<script>
+	document.getElementById("image").addEventListener("change", function(event) {
+		const [file] = this.files;
+		if (file) {
+			const preview = document.getElementById("preview-image");
+			preview.src = URL.createObjectURL(file);
+			preview.style.display = "block";
+		}
+	});
+</script>
+{% endblock %}

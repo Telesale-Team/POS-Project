@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>POS - ขายสินค้า</title>
+  <!-- Bootstrap CSS (ตัวอย่าง) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  >
+  <!-- FontAwesome (สำหรับไอคอน) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  >
+  <!-- Custom CSS (ถ้ามี) -->
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Prompt', sans-serif; /* ฟอนต์ไทยตัวอย่าง */
+    }
+    .navbar-brand {
+      font-weight: bold;
+    }
+    .product-card {
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .product-image {
+      height: 120px;
+      width: auto;
+      display: block;
+      margin: 0 auto;
+      object-fit: cover;
+    }
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+    }
+    /* ปุ่มที่เหมือนในภาพ (ตัวอย่าง) */
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    /* เมนูด้านบนคล้ายๆ Car Rental */
+    .nav-item a.nav-link {
+      color: #555;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-item a.nav-link:hover {
+      color: #007bff;
+    }
+    /* แถบสรุปออเดอร์ */
+    .order-summary {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-cash-register"></i> POS System
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-box"></i> Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-receipt"></i> Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-users-cog"></i> Admin</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header Section (คล้าย Banner) -->
+  <header class="py-5 text-center bg-light">
+    <h1>หน้าขายสินค้า</h1>
+    <p class="lead">เลือกรายการสินค้าที่คุณต้องการขายได้ที่นี่</p>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container my-5">
+    <div class="row">
+      <!-- โซนแสดงสินค้า -->
+      <div class="col-md-8">
+        <div class="row">
+          {% for product in products %}
+          <div class="col-md-4 mb-4">
+            <div class="card product-card" onclick="addToCart({{ product.id }})">
+              <div class="card-body text-center">
+                <!-- ตัวอย่างรูปสินค้า (ใส่รูปจริงแทนได้) -->
+                <img
+                  src="https://via.placeholder.com/120x120?text=Product"
+                  alt="{{ product.name }}"
+                  class="product-image mb-3"
+                >
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text text-primary">{{ product.price }} บาท</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- โซนสรุปออเดอร์ -->
+      <div class="col-md-4">
+        <div class="order-summary">
+          <h4><i class="fas fa-shopping-cart"></i> ตะกร้าสินค้า</h4>
+          <hr>
+          <div id="cart-items" class="mb-3">
+            <!-- รายการสินค้าในตะกร้า (JS จะเติม) -->
+          </div>
+          <h5 class="text-right">ยอดรวม: <span id="total-amount">0.00</span> บาท</h5>
+          <button
+            class="btn btn-success btn-block mt-3"
+            onclick="submitOrder()"
+          >
+            <i class="fas fa-check-circle"></i> ยืนยันการขาย
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-3 bg-white mt-auto border-top">
+    <p class="mb-0">&copy; 2025 POS System</p>
+  </footer>
+
+  <!-- Bootstrap JS + jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+  <!-- JavaScript สำหรับจัดการตะกร้าสินค้า -->
+
+</body>
+</html>

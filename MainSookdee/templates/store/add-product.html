@@ -1,202 +1,177 @@
-{% extends "base/base_admin.html" %}
+{% extends "base/back/base_admin.html" %}
+{% load static %}
 
-{% block title %} Add Product {% endblock title %}
-{%load static %}
+{% block title %}Add Product Manager Page{% endblock title %}
 
-{% block content%}
-
-
+{% block content %}
 
 <section class="content-header">
-	<div class="container-fluid">
-	  <div class="row mb-2">
-		<div class="col-sm-6">
-		  <h1>Store สินค้า</h1>
-		</div>
-		<div class="col-sm-6">
-		  <ol class="breadcrumb float-sm-right">
-			<li class="breadcrumb-item"><a href="#">Store</a></li>
-			<li class="breadcrumb-item active">เพิ่มสินค้า</li>
-		  </ol>
-		</div>
-	  </div>
-	</div>
-	<!-- /.container-fluid -->
-</section>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>เพิ่มสินค้าใหม่</h1>
+            </div>
 
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{% url 'product-managment' %}">Home</a></li>
+                    <li class="breadcrumb-item active">Add Product Manager Page</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
 
 <section class="content">
-	<form method="post"  enctype="multipart/form-data">
-		{% csrf_token %}
-		<div class="callout callout-info">
-			<h5><i class="fas fa-info"></i> เพิ่มสินค้า</h5>
-			ลงทะเบียนสินค้าเข้าสู่คงคลัง ผู้ใช้ควรกรอกรายละเอียดสินค้าให้ครบเพื่อ การนำข้อมูลที่จำเป็นนำไปใช้ในการประมวลผล หรือ คำนวนค่าต่างๆต่อไป
-		</div>		
-		<!-- Default box -->
+    <form action="{% url 'create-product' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}    
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">เพิ่มสินค้าใหม่</h3>
+            </div>
+            <div class="card-body">
 
-		<div class="card card-solid">
-			<div class="card-body">
-				<div class="row">
-					<!--Product Image show-->
-					<div class="col-12 col-sm-6">
-						<h3 class="d-inline-block d-sm-none">รูปภาพสินค้า</h3>
+                <div class="row">
+                    <!-- หมวดหมู่สินค้า -->
+                    <div class="col-6 col-md-12 col-sm-12">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="category">หมวดหมู่สินค้า <code>ข้อมูลจำเป็น</code></label>
+                                    <select id="category" name="category" class="form-control custom-select" value={{ cat.id }} required>
+                                        <option >เลือกหมวดหมู่สินค้า</option>
+                                        {% for cat in categorys %}
+                                            <option value="{{ cat.id }}" {% if product.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-						<div class="col-12">
-							<!-- productImages -->
-							<div class="form-group">
-								<label for="productImages" class="form-label">อัพโหลดภาพสินค้า <span><code>รูปภาพขนาดที่เหมาะสม 500x500px</code></span></label>
-								<input type="file" id="productImages" name="productImages" class="form-control" multiple accept="product_images/*">
-								<small><li>การอัพโหลดข้อมูลรูปภาพ ผู้ใช้ควรอัพโหลดมากกว่า 1 ภาพสำหรับการแสดงผล เพื่อให้รายการแสดงสินค้าสำหรับลูกค้าได้เห็น สินค้าหลากหลายรูปแบบสำหรับตัดสินใจ</small>
-							</div>
-						</div>
-						<div class="col-12">
-							<!-- checkstock -->
-							<div class="form-group">
-								<div class="custom-control custom-switch custom-switch-off-dark custom-switch-on-success">
-									<input type="checkbox" class="custom-control-input" name="checkstock" value="True" id="customSwitch3" checked>
-									<label class="custom-control-label" for="customSwitch3" name="checkstock">เปิดสต๊อกสินค้า</label>
-								</div>
-							</div>
-						</div>
+                    <!-- อัปโหลดภาพสินค้า -->
+                    <div class="col-6 col-md-12 col-sm-12">
+                        <div class="mt-2">
+                            <img id="preview-image" src="#" alt="New preview" style="max-width: 100px; display: none; border: 1px solid #ddd; padding: 5px;">				
+                        </div>
 
-						<div class="col-12">
-							<div class="preview-container img" id="previewContainer"></div>
-						</div>
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div id="previewImages" class="mb-3"></div>
+                                <div class="form-group">
+                                    <label for="image" class="form-label">อัพโหลดภาพสินค้า</label>
+                                    <input type="file" id="image" name="image" class="form-control" multiple accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-					</div>
+                    <!-- ชื่อสินค้า -->
+                    <div class="col-md-12">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="name">ชื่อสินค้า <code>ข้อมูลจำเป็น</code> </label>
+                                    <input  placeholder="กรอกชื่อสินค้า" type="text" id="name" name="name" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-					<!-- Product Descripstion -->
-					<div class="col-12 col-sm-6">
-						<!-- Name Product -->
-						<div class="row">
-							<div class="col-md-6 col-xs-6">
-								<div class="card">
-									<div class="card-body">
-										<!-- inputName th-->
-										<div class="form-group">
-											<label for="inputNameth">ชื่อสินค้า TH</label>
-											<input type="text" id="inputNameth" name="inputNameth" class="form-control" Required>
-											<small class="fw-border">ชื่อสินค้าภาษาไทย มีความสำหรับสำหรับการใช้งานตัวสินค้าชิ้นนี้</small>
-										</div>
-									</div>
-								</div>
-							</div>
+                    <!-- ผู้จำหน่ายสินค้า  -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="supplier">ซัพพลายเออร์</label>
+                            <select id="supplier" name="supplier" class="form-control custom-select" required>
+                                <option value="{{ supplier.id }}">เลือกผู้จำหน่ายสินค้านี้</option>
+                                {% for supplier in suppliers %}
+                                    <option value="{{ supplier.id }}">{{ supplier.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
-							<div class="col-md-6 col-xs-6">
-								<div class="card">
-									<div class="card-body">
-										<!-- inputName th-->
-										<div class="form-group">
-											<label for="inputNameen">ชื่อสินค้า En</label>
-											<input type="text" id="inputNameen" name="inputNameen" class="form-control" Required>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<hr>
+                    <!-- ราคาซื้อสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="price">ราคาซื้อ </label>
+                            <input type="number" placeholder="กรุณากรอกราคาต้นทุนสินค้า" step="1" id="price" name="price" class="form-control" min="0"  required>
+                        </div>
+                    </div>
 
-						<div class="row">
-							<div class="col-md-3">
-								<!-- inputCategory -->
-								<div class="form-group">
-									<label for="inputCategory">หมวดหมู่สินค้า</label>								
-									<select id="inputCategory" Required name= "inputCategory" class="form-control custom-select">
-									<option enabled="">เลือกหมวดหมู่</option>
+                    <!-- ราคาขายสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="saleprice">ราคาขาย lv1</label>
+                            <input type="number"  placeholder="กรุณากรอกราคาขายหน้าร้าน" id="saleprice" name="saleprice" class="form-control" min="0"  required>
+                        </div>
+                    </div>
 
-									{% for category in categorys %}							
-									<option>{{ category }}</option>
-									{% endfor %}
-									</select>
-								</div>
-							</div>
+                    <!-- จำนวนสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="stock_quantity">จำนวนสต๊อกสินค้า</label>
+                            <input type="number" placeholder="กรอกจำนวนสินค้า" id="stock_quantity" name="stock_quantity" class="form-control" min="0" required>
+                        </div>
+                    </div>
 
-							<div class="col-md-3">
-								<!-- inputPrice -->
-								<div class="form-group">
-									<label for="inputPrice">ราคา</label>
-									<input type="number" id="inputPrice" Required name="inputPrice" class="form-control" min="0" Required >
-								</div>
-							</div>
-							<div class="col-md-3">
-								<!-- inputQuantity -->
-								<div class="form-group">
-									<label for="inputQuantity">จำนวนสินค้า</label>
-									<input type="number" Required id="inputQuantity" name="inputQuantity" class="form-control" min="0" max="999" Required>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<!-- inputUnit -->
-								<div class="form-group">
-									<label for="inputUnit">หน่วยสินค้า </label>
-									<select id="inputUnit" Required name= "inputUnit" class="form-control custom-select">
-									<option enabled="">เลือกหน่วยสินค้า</option>
-									{% for unit in units %}						
-									<option>{{ unit }}</option>
-									{% endfor %}
-									</select>
-								</div>
-							</div>
-						</div>
+                    <!-- หน่วยสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="unit">หน่วยสินค้า </label>
+                            <select id="unit" name="unit" class="form-control custom-select" required>
+                                <option>เลือกหน่วยนับสินค้า</option>
+                                {% for u in units %}
+                                    <option value="{{ u.id }}">{{ u.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
-						<div class="row">
-							<!-- input Comments-->
-							<div class="col-md-12">
-								<div class="card border-primary">   
-								<div class="card-body">
-									<div class="form-group">
-										<label for="inputComments">ส่วนประกอบ</label>
-										<textarea id="inputComments" name="inputComments" class="form-control" rows="4"></textarea>
-										<small class="text-warning"> ส่วนประกอบของสินค้า หรือ ผลิตภัณฑ์ เป็นการแสดงส่วนผสมของสินค้าหรือผลิตภัณฑ์นั้น</small>
-									</div>
-								</div>
-								</div>
-							</div>
-						</div>
 
-						<div class="row">
-							<!-- input Profit -->
-							<div class="col-md-12">
-								<div class="card border-primary">
-								<div class="card-body">
-									<div class="form-group">
-										<label for="inputProfit">คุณประโยชน์</label>
-										<textarea id="inputProfit" name="inputProfit" class="form-control" rows="4"></textarea>
-										<small  class="text-warning">คำโปรยดึงดูดใจสำหรับลูกค้า</small>
-									</div>
-								</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<!-- input Descripstion -->
-					<div class="col-md-12">
-						<div class="card border-primary">
-						<div class="card-body">
-							<div class="form-group">
-								<label for="inputDescripstion">รายละเอียดอื่นๆ</label>
-								<textarea id="inputDescripstion" name="inputDescripstion" class="form-control" rows="4"></textarea>
-								<li><small>ช่องกรอกรายละเอียดอื่น ๆ เป็นส่วนสำคัญอย่างหนึ่งต่อการค้นหา</small>
-							</div>
-						</div>
-						</div>
-					</div>
-				</div>
+                    <!-- Check data -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="check_data">ให้มีการแจ้งเตือนเมื่อสินค้าต่ำกว่าที่กำหนด</label>
+                            <select class="custom-select rounded-0" id="check_data" name="check_data" required>
+                                <option selected>เลือก</option>                                  
+                                <option value='True'>เปิดการแจ้งเตือน</option>
+                                <option value="False">ไม่ต้องแจ้งเตือน</option>
+                            </select>
+                        </div>
+                    </div>
 
-			</div>
-			<!-- /.card-body -->
+                    <!-- จำนวนแจ้งเตือนขั้นต่ำ -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="reorder_level">จำนวนแจ้งเตือนขั้นต่ำ </label>
+                            <input type="number"  placeholder="ระบุจำนวนการแจ้งเตือน" step="1" id="reorder_level" name="reorder_level" class="form-control" min="0"  required>
+                        </div>
+                    </div>
 
-			<div class="card-body">
-				<button type="submit" class="btn btn-outline-primary btn-lg btn-flat">บันทึกข้อมูลสินค้า</button>
-				
-			</div>
-		<!-- /.card -->
-		</div>
-	</form>
-	</div>
+                    <!-- รายละเอียดสินค้า -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="description">รายละเอียดสินค้า</label>
+                            <textarea id="description" name="description" class="form-control" rows="10"></textarea>
+                        </div>
+                    </div>
+
+
+
+                    <!-- ปุ่มบันทึก / ยกเลิก -->
+                    <div class="col-md-12 mt-4">
+
+                        <button type="submit" class="btn btn-primary" name='save'><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล</button>
+                        <button type="submit" class="btn btn-primary" name='save-add'><i class="bi bi-file-earmark-plus"></i> บันทึก และ เพิ่มข้อมูลใหม่ </button>
+                        <button type="submit" class="btn btn-primary" name='save-edit'><i class="bi bi-pencil-square"></i> บันทึก และ แก้ใขข้อมูล </button>
+                        <a href="{{ request.META.HTTP_REFERER }}" type="button" class="btn btn-default"><i class="bi bi-x-circle"></i> ยกเลิก </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    
 </section>
-
-
-{% endblock %}
+{% endblock content %}

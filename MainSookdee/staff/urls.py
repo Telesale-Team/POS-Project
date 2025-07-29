@@ -6,8 +6,7 @@ urlpatterns = [
 
     path('', Account_Profile, name='profile'),
     path('register/', Register, name='register'),
-    path('logout/',user_logout, name='logout'),
-    path('login/',auth_views.LoginView.as_view(template_name="account/login.html"),name="login"),
-    path('forgot-password/',Forgot_Password, name='forgot-password'),
-
+    path('login/', User_login, name='login'),
+    path('logout/', User_logout, name='logout'),
+    path('forgot-password/', Forgot_Password, name='forgot-password'),
 ]

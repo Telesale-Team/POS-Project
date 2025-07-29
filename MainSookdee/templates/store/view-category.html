@@ -1,0 +1,196 @@
+{% extends "base/back/base_admin.html" %}
+
+{% block title %} View Category Manager Page {% endblock title %}
+{%load static %}
+
+
+{% block content%}
+<section class="content-header">
+	<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			{% if messages %}
+				{% for message in messages %}
+					{% if message.tags == 'error' %}
+					<div class="card-body">
+						<div class="alert alert-danger alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<h5><i class="icon fas fa-check"></i> ลบข้อมูล !</h5>
+							{{ message }}
+						</div>
+					</div>	
+					{% endif %}
+					{% if message.tags == 'warning' %}
+					<div class="card-body">
+						<div class="alert alert-warning alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<h5><i class="icon fas fa-check"></i> บันทึก และ แก้ไขข้อมูล </h5>
+							{{ message }}
+						</div>
+					</div>
+					{% endif %}
+					{% if message.tags == 'info' %}
+						<button type="button" class="btn btn-info toastrDefaultInfo">	Launch Info Toast  </button>
+					{% endif %}
+
+					{% if message.tags == 'success' %}
+						<div class="card-body">
+							<div class="alert alert-success alert-dismissible">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+								<h5><i class="icon fas fa-check"></i> เพิ่มข้อมูล!</h5>
+								{{ message }}
+							</div>
+						</div>					
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+
+
+	  <div class="row mb-2">
+		<div class="col-sm-6">
+		  <h1> {{ category_id.name }} </h1>
+		</div>
+		<div class="col-sm-6">
+		  <ol class="breadcrumb float-sm-right">
+			<li class="breadcrumb-item"><a href="#">Home</a></li>
+			<li class="breadcrumb-item active">Category Managment</li>
+		  </ol>
+		</div>
+	  </div>
+	</div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card card-primary">
+					<div class="card-header">
+					  <h3 class="card-title"><i class="bi bi-pencil"></i> แก้ใขข้อมูล</h3>
+					</div>
+					<!-- /.card-header -->
+					<!-- form start -->
+					<form  action="{% url 'category-managment' %}" method="post"  enctype="multipart/form-data">					 
+					{% csrf_token %}
+						<div class="card-body">
+								<!-- ส่วนแสดงรูปภาพปัจจุบัน (ถ้ามี) -->
+							<input type="hidden" name="category_code" class="form-control" readonly value={{ category_id.pk }}>
+							{% if category_id.image_category %}
+								<img src="{{ category_id.image_category.url }}" style="max-width: 100px; border: 1px solid #ddd; padding: 5px;">
+							{% else %}
+								<img src="{% static 'organic/images/category-thumb-8.jpg' %}" style="max-width: 100px; border: 1px solid #ddd; padding: 5px;">
+								<small> หมวดหมู่นี้ยังไม่มีภาพตัวอย่างสินค้า <b>กรุณาอัพโหลดภาพตัว </b> </small>
+							{% endif %}
+							
+							
+							<div class="mt-2">
+								<img id="preview-image" src="#" alt="New preview" style="max-width: 100px; display: none; border: 1px solid #ddd; padding: 5px;">
+							</div>							
+
+
+							<div class="form-group">
+								<label for="image">อัพโหลดภาพตัวอย่างหมวดหมู่</label>								
+								<div class="input-group">
+								  <div class="custom-file">
+									<input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
+									<label class="custom-file-label" for="image" >{{ category_id.image_category.name }}</label>
+								  </div>
+								  <div class="input-group-append">
+									<span class="input-group-text">Upload</span>
+								  </div>
+								</div>
+								<small> ขนาดของรูปภาพที่เหมาะสมสำหรับอัพโหลดเป็นภาพ ตัวอย่างของหมวดหมู่สินค้าควรมีขนาดไม่เกิน <b> 24x24 </b> pixel </small>
+							</div>
+
+							<div class="form-group">
+								<label for="name-category">ชื่อหมวดหมู่</label>
+								<input type="text" class="form-control" id="name-category"  name="name-category" value="{{ category_id.name }}" required>
+							</div>
+
+							<div class="form-group">
+								<label for="description">รายละเอียดหมวดหมู่</label>
+								<textarea id="description" class="form-control" rows="4" name="description" >{{ category_id.description }}</textarea>
+							</div>	
+
+							<div class="form-group">
+								<label>แสดงผลหน้าจอ</label>
+								<select class="form-control" name="check_data">
+									{% if category_id.check_data == True %}
+										<option value="True" selected>เปิดการใช้งาน</option>
+									{% else %}
+										<option value="False" selected>ปิดการใช้งาน</option>
+									{% endif %}
+
+								</select>
+							</div>
+
+					  <!-- /.card-body --> 
+
+							<button type="submit" class="btn btn-primary" name='save'><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล</button>
+							<button type="submit" class="btn btn-primary" name='save-edit'><i class="bi bi-pencil-square"></i> บันทึก/แก้ใขข้อมูล </button>
+							<button type="submit" class="btn btn-primary" name='save-add'><i class="bi bi-file-earmark-plus"></i> บันทึก/สร้างใหม่</button>							
+							<a href="{{ request.META.HTTP_REFERER }}" type="button" class="btn btn-default"> <i class="bi bi-x-circle"></i> ยกเลิก </a>
+							<button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#modal-delete{{ item.id }}" > <i class="bi bi-trash"></i> ลบข้อมูล </button>
+						
+						</div>
+					</form>
+
+			</div>
+		<!-- /.col -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container-fluid -->
+</section>
+
+<div class="modal fade" id="modal-delete{{ item.id }}">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5>คุณต้องการลบข้อมูล ?</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<p> <code>หมวดหมู่สินค้า :</code>  <b> {{ category_id }} </b> </p>
+				{% if category_id.image_category %}
+					<img src="{{ category_id.image_category.url }}" style="max-width: 100px; border: 1px solid #ddd; padding: 5px;">
+				{% else %}
+					<img src="{% static 'organic/images/category-thumb-8.jpg' %}" style="max-width: 100px; border: 1px solid #ddd; padding: 5px;">
+				{% endif %}
+
+			<p> ข้อมูลสินค้าทั้งหมดลบออกจากสต๊อกสินค้าด้วย </p>
+			{% if products %}
+				{% for product in products %}
+					<p> <i class="bi bi-check2-circle" style="color:red;" ></i> <a ><b> {{ product.name }} </b> </a></p>
+				{% endfor %}
+			{% endif %}
+
+
+		</div>
+		<div class="modal-footer justify-content-between">
+			<a href="{% url 'delete-category' category_id.id %}" type="button" class="btn btn-danger"> <i class="bi bi-trash"></i> ยืนยันลบข้อมูล</a>
+			<button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+			
+		</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+
+  <script>
+	document.getElementById("image").addEventListener("change", function(event) {
+		const [file] = this.files;
+		if (file) {
+			const preview = document.getElementById("preview-image");
+			preview.src = URL.createObjectURL(file);
+			preview.style.display = "block";
+		}
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+<body>
+  <style>
+    body {
+        display: flex;
+        font-family: sans-serif;
+    }
+    .left-panel {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        padding: 20px;
+        width: 70%; /* Adjust as needed */
+    }
+    .product-item {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .product-item img {
+        max-width: 100%;
+        height: auto;
+    }
+    .right-panel {
+        width: 30%; /* Adjust as needed */
+        padding: 20px;
+        border-left: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+    }
+    #order-summary {
+        flex-grow: 1;
+    }
+    #total-net {
+        text-align: right;
+        margin-bottom: 20px;
+    }
+</style>
+
+    <div class="left-panel">
+        {% for product in products %}
+            {% for image in image_product %}
+                {% if product.id == image.product_id %}
+                <div class="product-item" data-name="{{ product.name }}" data-price="{{product.price}}">
+                    <img src="{{ image.image.url }}" alt="กาโกะยากิ 10บ">
+                    <p>{{ product.name }}<br> ฿{{product.price}}</p>
+                </div>
+                {%endif%}
+            {% endfor %}
+        {% endfor %}
+        
+
+        <button class="btn btn-primary mb-1">เคลียร์</button>
+        <button class="btn btn-primary mb-1">ลูกค้า</button>
+        <button class="btn btn-primary mb-1">ลิ้นชัก</button>
+        <button class="btn btn-primary mb-1">พัก</button>
+        <button class="btn btn-primary mb-1">สรุป</button>
+    </div>
+
+    <div class="right-panel">
+        <div id="order-summary"></div>
+        <div id="total-net">รวมสุทธิ: ฿0.00</div>
+        <button id="payment-button" class="btn btn-outline-success btn-lg">ชำระเงิน (112)</button>
+    </div>
+
+    <script>
+      const productItems = document.querySelectorAll('.product-item');
+      const orderSummary = document.getElementById('order-summary');
+      const totalNet = document.getElementById('total-net');
+      let total = 0;
+      let totalQuantity = 0;
+      let orderItems = {}; // Object to store item quantities
+
+      productItems.forEach(item => {
+          item.addEventListener('click', () => {
+              const name = item.dataset.name;
+              const price = parseFloat(item.dataset.price);
+
+              if (orderItems[name]) {
+                  orderItems[name].quantity++;
+              } else {
+                  orderItems[name] = { quantity: 1, price: price };
+              }
+
+              total += price;
+              totalQuantity++;
+
+              updateOrderSummary();
+              totalNet.textContent = `รวมสุทธิ: ฿${total.toFixed(2)}`;
+          });
+      });
+
+      function updateOrderSummary() {
+          orderSummary.innerHTML = ''; // Clear previous summary
+          for (const itemName in orderItems) {
+              const item = orderItems[itemName];
+              const orderItem = document.createElement('p');
+              orderItem.textContent = `${itemName} x${item.quantity} - ฿${(item.price * item.quantity).toFixed(2)}`;
+              orderSummary.appendChild(orderItem);
+          }
+          const totalQuantityDisplay = document.createElement('p');
+          totalQuantityDisplay.textContent = `รวมจำนวน: ${totalQuantity}`;
+          orderSummary.appendChild(totalQuantityDisplay);
+      }
+  </script>
+</body>
+</html>

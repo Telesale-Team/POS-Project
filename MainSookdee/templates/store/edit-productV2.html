@@ -1,0 +1,171 @@
+{% extends "base/back/base_admin.html" %}
+{% load static %}
+
+{% block title %}Add Product Manager Page{% endblock title %}
+
+{% block content %}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{ product.name }}</h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{% url 'product-managment' %}">Home</a></li>
+                    <li class="breadcrumb-item active">Add Product Manager Page</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <form action="{% url 'create-product' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}    
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">แก้ใข/เพิ่มเติมข้อมูลสินค้า</h3>
+            </div>
+            <div class="card-body">
+
+                
+                <div class="row">
+                    <!-- หมวดหมู่สินค้า -->
+                    <div class="col-6 col-md-12 col-sm-12">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="category">หมวดหมู่สินค้า <code>ข้อมูลจำเป็น</code></label>
+                                    <select id="category" name="category" class="form-control custom-select" required>
+                                        <option value="">เลือกหมวดหมู่สินค้า</option>
+                                        {% for cat in categorys %}
+                                            <option value="{{ cat.id }}" {% if product.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- อัปโหลดภาพสินค้า -->
+                    <div class="col-6 col-md-12 col-sm-12">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div id="previewImages" class="mb-3"></div>
+                                <div class="form-group">
+                                    <label for="image" class="form-label">อัพโหลดภาพสินค้า</label>
+                                    <input type="file" id="image" name="image" class="form-control" multiple accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+  
+                </div>
+                <div class="row">
+                    <!-- ชื่อสินค้า -->
+                    <div class="col-md-12">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="name">ชื่อสินค้า <code>ข้อมูลจำเป็น</code> </label>
+                                    <input type="text" id="name" name="name" class="form-control" value="{{ product.name }}" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- รายละเอียดสินค้า -->
+                    <div class="col-md-12">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="description">รายละเอียดสินค้า</label>
+                                    <textarea id="description" value="{{ product.description}}" name="description" class="form-control" rows="4">{{ product.description|default_if_none:'' }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- ผู้จำหน่ายสินค้า  -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="supplier">ซัพพลายเออร์</label>
+                            <select id="supplier" name="supplier" class="form-control custom-select" required>
+                                <option value="">เลือกผู้จำหน่ายสินค้านี้</option>
+                                {% for product in suppliers %}
+                                    <option value="{{ product.id }}">{{ product.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ราคาซื้อสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="price">ราคาซื้อ </label>
+                            <input type="number"  placeholder="กรุณากรอกราคาต้นทุนสินค้า" step="0.01" id="price" name="price" class="form-control" min="0"  required>
+                        </div>
+                    </div>
+
+                    <!-- ราคาขายสินค้า-->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="saleprice">เราคาขาย </label>
+                            <input type="number"  placeholder="กรุณากรอกราคาขายหน้าร้าน" id="saleprice" name="saleprice" class="form-control" min="0"  required>
+                        </div>
+                    </div>
+                    <!-- จำนวนสินค้า-->
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label for="stock_quantity">จำนวนสต๊อกสินค้า</label>
+                            <input type="number" placeholder="กรอกจำนวนสินค้า" id="stock_quantity" name="stock_quantity" class="form-control" min="0" required>
+                        </div>
+                    </div>
+                    <!-- หน่วยสินค้า-->
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="unit">หน่วยสินค้า </label>
+                            <select id="unit" name="unit" class="form-control custom-select" required>
+                                <option value="">เลือกหน่วยนับสินค้า</option>
+                                {% for u in units %}
+                                    <option value="{{ u.id }}">{{ u.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- จำนวนแจ้งเตือนขั้นต่ำ -->
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="reorder_level">จำนวนแจ้งเตือนขั้นต่ำ </label>
+                            <input type="number"  placeholder="ระบุจำนวนการแจ้งเตือน" step="1" id="reorder_level" name="reorder_level" class="form-control" min="0"  required>
+                        </div>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="check_data" checked="">
+                        <label class="form-check-label">ให้มีการแจ้งเตือนเมื่อสินค้าต่ำกว่าที่กำหนด</label>
+                    </div>
+
+                </div>
+                <div class="row">   
+
+    
+                    <!-- ปุ่มบันทึก / ยกเลิก -->
+                    <div class="col-md-12 mt-4">
+
+                        <button type="submit" class="btn btn-primary" name='save'><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล</button>
+                        <button type="submit" class="btn btn-outline-primary" name='save-edit'><i class="bi bi-pencil-square"></i> บันทึก/แก้ใขข้อมูล </button>
+                        <a href="{{ request.META.HTTP_REFERER }}" type="button" class="btn btn-default float-right"></i> ยกเลิก </a>
+                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+</section>
+{% endblock content %}

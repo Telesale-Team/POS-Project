@@ -32,10 +32,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name = "หมวดหมู่สินค้า"
-        verbose_name_plural = "หมวดหมู่สินค้า"
-
 class CategoryImage(models.Model):
     category = models.ForeignKey(Category, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='category_images/')
@@ -51,9 +47,6 @@ class Unit(models.Model):
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name = "หน่วยสินค้า"
-        verbose_name_plural = "หน่วยสินค้า"
 
 class Product(models.Model):
     
@@ -74,9 +67,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name = "สินค้า"
-        verbose_name_plural = "สินค้า"
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
@@ -90,10 +81,6 @@ class ProductImage(models.Model):
     def __str__(self):
         return f"{self.product.name} - {self.caption or 'Image'}"
 
-    class Meta:
-        ordering = ['order']  # ให้เรียงตามค่า order
-        verbose_name = "รูปภาพสินค้า"
-        verbose_name_plural = "รูปภาพสินค้า"
 
 class StockInventory(models.Model):
 

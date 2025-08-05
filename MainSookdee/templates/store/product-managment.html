@@ -9,12 +9,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0"> Product Manager Page</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item active"> Product Manager Page</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -84,7 +84,6 @@
 		<!-- ./col -->
     </div>
 	<!-- Graph Report-->
-
 	<div class="row">
 		<div class="col-md-8">
 		<div class="card">
@@ -108,7 +107,7 @@
 				</div>
 				</div>
 				<button type="button" class="btn btn-tool" data-card-widget="remove">
-				<i class="fas fa-times"></i>
+					<i class="fas fa-times"></i>
 				</button>
 			</div>
 			</div>
@@ -120,11 +119,12 @@
 					<strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
 				</p>
 
-				<div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+				<div class="chart">
 					<!-- Sales Chart Canvas -->
-					<canvas id="salesChart" height="180" style="height: 180px; display: block; width: 1051px;" width="1051" class="chartjs-render-monitor"></canvas>
+					<canvas id="salesChart" height="180" style="height: 180px;"></canvas>
 				</div>
 				<!-- /.chart-responsive -->
+
 				</div>
 				<!-- /.col -->
 				<div class="col-md-4">
@@ -174,43 +174,43 @@
 			</div>
 			<!-- ./card-body -->
 			<div class="card-footer">
-			<div class="row">
-				<div class="col-sm-3 col-6">
-				<div class="description-block border-right">
-					<span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-					<h5 class="description-header">$35,210.43</h5>
-					<span class="description-text">TOTAL REVENUE</span>
+				<div class="row">
+					<div class="col-sm-3 col-6">
+					<div class="description-block border-right">
+						<span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
+						<h5 class="description-header">$35,210.43</h5>
+						<span class="description-text">TOTAL REVENUE</span>
+					</div>
+					<!-- /.description-block -->
+					</div>
+					<!-- /.col -->
+					<div class="col-sm-3 col-6">
+					<div class="description-block border-right">
+						<span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
+						<h5 class="description-header">$10,390.90</h5>
+						<span class="description-text">TOTAL COST</span>
+					</div>
+					<!-- /.description-block -->
+					</div>
+					<!-- /.col -->
+					<div class="col-sm-3 col-6">
+					<div class="description-block border-right">
+						<span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
+						<h5 class="description-header">$24,813.53</h5>
+						<span class="description-text">TOTAL PROFIT</span>
+					</div>
+					<!-- /.description-block -->
+					</div>
+					<!-- /.col -->
+					<div class="col-sm-3 col-6">
+					<div class="description-block">
+						<span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
+						<h5 class="description-header">1200</h5>
+						<span class="description-text">GOAL COMPLETIONS</span>
+					</div>
+					<!-- /.description-block -->
+					</div>
 				</div>
-				<!-- /.description-block -->
-				</div>
-				<!-- /.col -->
-				<div class="col-sm-3 col-6">
-				<div class="description-block border-right">
-					<span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
-					<h5 class="description-header">$10,390.90</h5>
-					<span class="description-text">TOTAL COST</span>
-				</div>
-				<!-- /.description-block -->
-				</div>
-				<!-- /.col -->
-				<div class="col-sm-3 col-6">
-				<div class="description-block border-right">
-					<span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-					<h5 class="description-header">$24,813.53</h5>
-					<span class="description-text">TOTAL PROFIT</span>
-				</div>
-				<!-- /.description-block -->
-				</div>
-				<!-- /.col -->
-				<div class="col-sm-3 col-6">
-				<div class="description-block">
-					<span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-					<h5 class="description-header">1200</h5>
-					<span class="description-text">GOAL COMPLETIONS</span>
-				</div>
-				<!-- /.description-block -->
-				</div>
-			</div>
 			<!-- /.row -->
 			</div>
 			<!-- /.card-footer -->
@@ -333,17 +333,18 @@
 									<td> {{ product.id }} </td>
 									<td>								
 										
-										<a href="{% url 'view-product' product.id %}">
+										<a href="#" data-toggle="modal" data-target="#modal-view{{product.id}}">
 											{%if product.image_product %}
 											<img src="{{ product.image_product.url }}" class="rounded" alt="{{ product.name }}" width="30" height="30"> &nbsp; {{ product.name }} &nbsp;
 											{% else %}
 											<i class="bi bi-image-fill"></i> &nbsp; {{ product.name }}
 											{% endif %}
 										</a>
+
 									</td>
-									<td>  {{ product.price }} </td>
-									<td>  {{ product.cost }} </td>
-									<td>  {{ product.stock_quantity }} {{ product.unit }} </td>
+									<td>{{ product.price }}</td>
+									<td>{{ product.cost }}</td>
+									<td>{{ product.stock_quantity }} {{ product.unit }} </td>
 									<td> 
 										<i class="bi bi-exclamation-diamond-fill" style="color:green;"></i>
 									</td>
@@ -353,6 +354,7 @@
 										<a href="{% url 'delete-product' product.pk %}" type='button' class="btn btn-danger"  data-toggle="modal" data-target="#modal-delete{{product.id}}" ><i class="fas fa-trash"></i></a>
 									</td>
 								</tr>
+
 								<div class="modal fade" id="modal-delete{{ product.id }}">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -377,20 +379,69 @@
 									<!-- /.modal-dialog -->
 								</div>
 
+								<div class="modal fade show" id="modal-view{{ product.id}}" >
+									<div class="modal-dialog modal-xl">
+										<div class="modal-content">
+											<div class="modal-header">
+											<h4 class="modal-title">Product Detail</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-md-6">
+													{% if product.image_product %}
+														<img src="{{ product.image_product.url }}" class="img-fluid" alt="{{ product.name }}" style="width:500px;height:500px;">
+													{% else %}
+														<i class="bi bi-image-fill"></i>
+													{% endif %}	
+													</div>
+
+													<div class="col-md-6">
+														<p class="text-muted">SKU: {{ product.id }}</p>
+														<p class="text-muted">หมวดหมู่: {{ product.category.name }}</p>
+														<p class="text-muted">ต้นทุน: {{ product.cost }} /{{ product.unit}}</p>
+														<p class="text-muted">ราคาขาย: {{ product.price }} /{{ product.unit}} </p>
+														<p class="text-muted">จำนวนคงเหลือ: {{ product.stock_quantity }} {{ product.unit }}</p>
+														<p class="text-muted">สถานะ: 
+															{% if product.stock_quantity <= product.min_stock %}
+																<span class="text-danger">ใกล้หมด</span>
+															{% else %}
+																<span class="text-success">เพียงพอ</span>
+															{% endif %}	
+														</p>
+														<p class="text-muted">วันที่เพิ่ม: {{ product.created_at|date:"d M Y" }}</p>
+														<p class="text-muted">วันที่แก้ไข: {{ product.updated_at|date:"d M Y" }}</p>
+														<p class="text-muted">สถานะการขาย: 
+															{% if product.is_active %}
+																<span class="text-success">เปิดขาย</span>
+															{% else %}
+																<span class="text-danger">ปิดขาย</span>
+															{% endif %}
+														</p>
+														<p class="text-muted">รายละเอียด: {{ product.description }}</p>
+
+
+													
+												</div>
+
+											</div>
+											<div class="modal-footer justify-content-between">
+												
+															<a href="{% url 'edit-product' product.id %}" class="btn btn-warning"><i class="fas fa-edit"></i> แก้ไขข้อมูล</a>
+															<a href="{% url 'delete-product' product.id %}" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{product.id}}"><i class="fas fa-trash"></i> ลบข้อมูล</a>
+
+											</div>
+										</div>
+									<!-- /.modal-content -->
+									</div>
+									<!-- /.modal-dialog -->
+								</div>
+
 
 							{% endfor %}
 						</tbody>
-						<tfoot>
-							<tr>
-								<th> หมวดหมู่ </th>
-								<th > ชื่อ </th>
-								<th > ต้นทุน </th>
-								<th > ราคาขาย </th>
-								<th > จำนวน </th>
-								<th >สถานะ </th>
-								<th class="project-actions text-right"> จัดการ </th>
-							</tr>
-						</tfoot>
 					</table>
 				</div>
 				<!-- /.card-body -->
@@ -399,5 +450,6 @@
 		</div>
 		<!-- /.col -->
 	</div>
+
 
 {% endblock content%}

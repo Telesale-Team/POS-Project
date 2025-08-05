@@ -137,6 +137,7 @@
 
 	<!-- jQuery -->
 	<script src="{% static 'AdminLte-3/plugins/jquery/jquery.min.js' %}"></script>
+
 	<!-- jQuery UI 1.11.4 -->
 	<script src="{% static 'AdminLte-3/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
 
@@ -147,6 +148,7 @@
 
 	<!-- ChartJS -->
 	<script src="{% static 'AdminLte-3/plugins/chart.js/Chart.min.js' %}"></script>
+
 	<!-- Sparkline -->
 	<script src="{% static 'AdminLte-3/plugins/sparklines/sparkline.js' %}"></script>
 	<!-- JQVMap -->
@@ -180,9 +182,27 @@
 	
 	<!-- Toastr -->
 	<script src="{% static 'AdminLte-3/plugins/toastr/toastr.min.js' %}"></script>
-	<script src="{% static 'AdminLte-3/plugins/summernote/summernote-bs4.min.js'%}"></script>
 	
+	<!-- Bootstrap Switch -->
+	<script src="{% static 'AdminLTE-3/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+
+	<!-- DataTables  & Plugins -->
+	<script src="{% static 'AdminLTE-3/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/jszip/jszip.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/pdfmake/pdfmake.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/pdfmake/vfs_fonts.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
 	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+	 
+	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+	<script src="{% static 'AdminLTE-3/dist/js/pages/dashboard2.js'%}"></script>
 	<script>
 		$.widget.bridge('uibutton', $.ui.button)
 	</script>
@@ -193,8 +213,6 @@
 		});
 	</script>
 
-	<!-- Bootstrap Switch -->
-	<script src="{% static 'AdminLTE-3/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
 	<script>
 		const productImagesInput = document.getElementById('productImages');
 		const previewContainer = document.getElementById('previewContainer');
@@ -221,38 +239,23 @@
 		});
 	</script>
 
-
-	<!-- DataTables  & Plugins -->
-	<script src="{% static 'AdminLTE-3/plugins/datatables/jquery.dataTables.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/jszip/jszip.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/pdfmake/pdfmake.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/pdfmake/vfs_fonts.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
-	<script src="{% static 'AdminLTE-3/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
-
-<script>
-	$(function () {
-	  $("#example1").DataTable({
-		"responsive": true, "lengthChange": false, "autoWidth": false,
-		"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-	  }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-	  $('#example2').DataTable({
-		"paging": true,
-		"lengthChange": false,
-		"searching": false,
-		"ordering": true,
-		"info": true,
-		"autoWidth": false,
-		"responsive": true,
-	  });
-	});
-</script>
+	<script>
+		$(function () {
+		$("#example1").DataTable({
+			"responsive": true, "lengthChange": false, "autoWidth": false,
+			"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+		}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+		$('#example2').DataTable({
+			"paging": true,
+			"lengthChange": false,
+			"searching": false,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+		});
+		});
+	</script>
 
 </body>
 </html>

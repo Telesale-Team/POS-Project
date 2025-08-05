@@ -20,13 +20,13 @@ $(function () {
     datasets: [
       {
         label: 'Digital Goods',
-        backgroundColor: 'rgba(60,141,188,0.9)',
-        borderColor: 'rgba(60,141,188,0.8)',
+        backgroundColor: 'rgba(143, 188, 60, 0.8)',
+        borderColor: 'rgba(143, 188, 60, 0.8)',
         pointRadius: false,
-        pointColor: '#3b8bba',
-        pointStrokeColor: 'rgba(60,141,188,1)',
+        pointColor: '#4aba3bff',
+        pointStrokeColor: 'rgba(143, 188, 60, 0.8)',
         pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(60,141,188,1)',
+        pointHighlightStroke: 'rgba(143, 188, 60, 0.8)',
         data: [28, 48, 40, 19, 86, 27, 90]
       },
       {

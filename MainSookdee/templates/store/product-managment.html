@@ -383,12 +383,40 @@
 									<div class="modal-dialog modal-xl">
 										<div class="modal-content">
 											<div class="modal-header">
-											<h4 class="modal-title">Product Detail</h4>
+											<h4 class="modal-title">Product Details</h4>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">×</span>
 											</button>
 											</div>
 											<div class="modal-body">
+												<div class="row">
+													<div class="col-md-12">
+														{% if product.image_product %}
+														<div class="card-body p-0">
+															<ul class="users-list clearfix">
+																<li>
+																	<img src="{{ product.image_product.url }}" alt="User Image" style="width:128px;height:128px;">
+																	<h3 class="users-list-name mt-2" href="#"><strong>{{ product.name }}<strong></h3>
+																	<p class="users-list-date description-text">{{ product.id }}</p>
+																	<span class="users-list-date text-muted" >{{ product.category.name }}</span>
+																</li>
+															</ul>
+															<!-- /.users-list -->
+														</div>
+														{% else %}
+															<i class="bi bi-image-fill"></i>
+														{% endif %}
+													</div>
+													<div class="col-md-12">
+														<p class="text-muted">รายละเอียด: {{ product.description }}</p>
+														<p class="text-muted">บาร์โค้ด: {{ product.barcode }}</p>
+														<p class="text-muted">ต้นทุน: {{ product.cost }} /{{ product.unit }}</p>
+														<p class="text-muted	">ราคาขาย: {{ product.price }} /{{ product.unit}} </p>
+														<p class="text-muted	">จำนวนคงเหลือ: {{ product.stock_quantity }} {{ product.unit }}</p>	
+														
+												</div>
+
+												<!-- Product Details-->												 
 												<div class="row">
 													<div class="col-md-6">
 													{% if product.image_product %}
@@ -425,6 +453,7 @@
 
 													
 												</div>
+												<!-- Endproduct -->
 
 											</div>
 											<div class="modal-footer justify-content-between">

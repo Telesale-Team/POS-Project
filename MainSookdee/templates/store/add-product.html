@@ -6,172 +6,261 @@
 {% block content %}
 
 <section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>เพิ่มสินค้าใหม่</h1>
-            </div>
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1>เพิ่มสินค้าใหม่</h1>
+			</div>
 
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{% url 'product-managment' %}">Home</a></li>
-                    <li class="breadcrumb-item active">Add Product Manager Page</li>
-                </ol>
-            </div>
-        </div>
-    </div>
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="{% url 'product-managment' %}">Home</a></li>
+					<li class="breadcrumb-item active">Add Product</li>
+				</ol>
+			</div>
+		</div>
+	</div>
 </section>
 
 <section class="content">
-    <form action="{% url 'create-product' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}    
-        <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title">เพิ่มสินค้าใหม่</h3>
-            </div>
-            <div class="card-body">
+	<form action="{% url 'create-product' %}" method="post" enctype="multipart/form-data">
+		{% csrf_token %}    
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">เพิ่มสินค้าใหม่</h3>
+			</div>
+			<div class="card-body">
 
-                <div class="row">
-                    <!-- หมวดหมู่สินค้า -->
-                    <div class="col-6 col-md-12 col-sm-12">
-                        <div class="card border-primary">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="category">หมวดหมู่สินค้า <code>ข้อมูลจำเป็น</code></label>
-                                    <select id="category" name="category" class="form-control custom-select" value={{ cat.id }} required>
-                                        <option >เลือกหมวดหมู่สินค้า</option>
-                                        {% for cat in categorys %}
-                                            <option value="{{ cat.id }}" {% if product.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+				<div class="row">
 
-                    <!-- อัปโหลดภาพสินค้า -->
-                    <div class="col-6 col-md-12 col-sm-12">
-                        <div class="mt-2">
-                            <img id="preview-image" src="#" alt="New preview" style="max-width: 100px; display: none; border: 1px solid #ddd; padding: 5px;">				
-                        </div>
+					<!-- รหัสบาร์โค้ดของสินค้า -->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="name">รหัสบาร์โค้ด </label>
+									<p class="text-muted text-sm">  </p>
+									<!-- Input for barcode -->
+									<input type="text" placeholder="รหัสบาร์โค้ดของสินค้า เช่น 8857123456789" name="barcode" class="form-control" >
+								</div>
+							</div>
+						</div>
+					</div>
 
-                        <div class="card border-primary">
-                            <div class="card-body">
-                                <div id="previewImages" class="mb-3"></div>
-                                <div class="form-group">
-                                    <label for="image" class="form-label">อัพโหลดภาพสินค้า</label>
-                                    <input type="file" id="image" name="image" class="form-control" multiple accept="image/*">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+					<!-- รูปภาพสินค้า -->
+					<div class="col-md-12">					
 
-                    <!-- ชื่อสินค้า -->
-                    <div class="col-md-12">
-                        <div class="card border-primary">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="name">ชื่อสินค้า <code>ข้อมูลจำเป็น</code> </label>
-                                    <input  placeholder="กรอกชื่อสินค้า" type="text" id="name" name="name" class="form-control" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						<div class="card border-primary">
+							<img class="mt-4 mb-4 ml-4" id="preview-image" alt="New preview" style="max-width: 350px; max-height: 350px; display: none;">
+							<div class="card-body">
 
-                    <!-- ผู้จำหน่ายสินค้า  -->
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="supplier">ซัพพลายเออร์</label>
-                            <select id="supplier" name="supplier" class="form-control custom-select" required>
-                                <option value="{{ supplier.id }}">เลือกผู้จำหน่ายสินค้านี้</option>
-                                {% for supplier in suppliers %}
-                                    <option value="{{ supplier.id }}">{{ supplier.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
+								<div class="form-group">
+									<label for="image_product" class="form-label">อัพโหลดภาพสินค้า </label>
+									<p class="text-muted text-sm">
+										ขนาดไฟล์ไม่เกิน 200 KB ขนาดภาพไม่เกิน 4500x450px                   
+									</p>
+									<input type="file" id="image_product" name="image_product" class="form-control" multiple accept="image/*">
+								</div>
+							</div>
+						</div>
+					</div>                    
 
-                    <!-- ราคาซื้อสินค้า-->
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="price">ราคาซื้อ </label>
-                            <input type="number" placeholder="กรุณากรอกราคาต้นทุนสินค้า" step="1" id="price" name="price" class="form-control" min="0"  required>
-                        </div>
-                    </div>
+					<!-- ชื่อสินค้า -->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="name">ชื่อสินค้า </label>
+									<input  placeholder="กรอกชื่อสินค้า เช่น ผักสลัดเรดโอ๊ค " type="text" id="name" name="name" class="form-control" required>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                    <!-- ราคาขายสินค้า-->
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="saleprice">ราคาขาย lv1</label>
-                            <input type="number"  placeholder="กรุณากรอกราคาขายหน้าร้าน" id="saleprice" name="saleprice" class="form-control" min="0"  required>
-                        </div>
-                    </div>
+					<!-- รายละเอียดสินค้า -->
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="description">รายละเอียดสินค้า</label>
+							<textarea id="description" placeholder=" ใส่คำอธิบายสั้น ๆ เกี่ยวกับสินค้า เช่น ปลูกแบบไฮโดรโปนิกส์ สดใหม่ทุกวัน" name="description" class="form-control" rows="10"></textarea>
+						</div>
+					</div>
 
-                    <!-- จำนวนสินค้า-->
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="stock_quantity">จำนวนสต๊อกสินค้า</label>
-                            <input type="number" placeholder="กรอกจำนวนสินค้า" id="stock_quantity" name="stock_quantity" class="form-control" min="0" required>
-                        </div>
-                    </div>
+					<!-- หมวดหมู่สินค้า -->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="category">หมวดหมู่สินค้า <code>ข้อมูลจำเป็น</code></label>
+									<select id="category" name="category" class="form-control custom-select" value={{ cat.id }} required>
+										<option >เลือกหมวดหมู่สินค้า</option>
+										{% for cat in categorys %}
+											<option value="{{ cat.id }}" {% if product.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                    <!-- หน่วยสินค้า-->
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="unit">หน่วยสินค้า </label>
-                            <select id="unit" name="unit" class="form-control custom-select" required>
-                                <option>เลือกหน่วยนับสินค้า</option>
-                                {% for u in units %}
-                                    <option value="{{ u.id }}">{{ u.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
+					<!-- ราคาต้นทุน-->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="name">ราคาต้นทุน </label>
+									<p> <span class="text-muted text-sm"> กรอกราคาต้นทุนเป็นจำนวนเต็ม เพื่อใช้ในการคำนวนหากำไร/ขาดทุน</span> </p>
+									 <input  placeholder="กรอกราคาต้นทุน เช่น฿ 1,400" type="number" step="any"  name="cost" class="form-control" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- ราคาต้นขาย-->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="name">ราคาขาย </label>
+									<span class="text-muted text-sm"> (ราคาขายที่แนะนำคือ ราคาต้นทุน + 10% )</span>
+									<input  placeholder="กรอกราคาขายสินค้า เช่น ฿1,690" type="number"  name="price" class="form-control" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- จำนวนสินค้า-->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="stock_quantity">จำนวนสินค้า</label>
+									<input type="number" placeholder="กรอกจำนวนสต๊อกสินค้า เช่น 50" id="stock_quantity" name="stock_quantity" class="form-control" min="0" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- จำนวนการแจ้งเตือนเมื่อสินค้าต่ำกว่า-->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="stock_quantity">จำนวนแจ้งเตือน</label>
+									<p class="text-muted"> กำหนดจำนวนสินค้าที่จะให้ระบบแจ้งเตือนเมื่อสินค้ามีจำนวนน้อยกว่า หรือ เท่ากับ จำนวนที่กำหนด </p>
+									<input type="number" placeholder="เช่น หากกรอก 10 ระบบจะแจ้งเตือนเมื่อสินค้ามีจำนวนน้อยกว่า หรือ เท่ากับ 10" id="stock_alert" name="stock_alert" class="form-control" min="0" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- สถานที่สำหรับเก็บสินค้า -->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="status"> สถานที่สำหรับเก็บสินค้า </label>
+									<p class="text-muted text-sm"> กำหนดสถานที่สำหรับพักสินค้า เพื่อให้ง่ายต่อการค้นหาสินค้าในคลังสินค้า </p>
+									<select class="custom-select rounded-0" name="warehouse" required>
+										<option selected>เลือก</option>
+										{% for w in warehouse %}
+										<option value='{{ w.id }}'>{{ w.name}}{{ w.id}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- ผู้จำหน่ายสินค้า  -->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="supplier">ผู้จำหน่ายสินค้า</label>
+									<p class="text-muted text-sm"> เลือกผู้จำหน่ายสินค้าจากรายการที่มีอยู่ หรือ เพิ่มผู้จำหน่ายใหม่ในหน้าจัดการผู้จำหน่าย </p>
+									<!-- Select supplier -->
+									<select id="supplier" name="supplier" class="form-control custom-select" required>
+										<option value="{{ supplier.id }}">เลือกผู้จำหน่ายสินค้านี้</option>
+										{% for supplier in suppliers %}
+											<option value="{{ supplier.id }}">{{ supplier.name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					
+					<!-- หน่วยสินค้า-->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="unit">หน่วยสินค้า </label>
+									<p class="text-muted text-sm"> เลือกหน่วยนับสินค้าที่ใช้ในการขาย เช่น กิโลกรัม, ชิ้น, แพ็ค เป็นต้น </p>
+									<select id="unit" name="unit" class="form-control custom-select" required>
+										<option>เลือกหน่วยนับสินค้า</option>
+										{% for u in units %}
+											<option value="{{ u.id }}">{{ u.name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+						</div>
+
+					</div>
 
 
-                    <!-- Check data -->
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="check_data">ให้มีการแจ้งเตือนเมื่อสินค้าต่ำกว่าที่กำหนด</label>
-                            <select class="custom-select rounded-0" id="check_data" name="check_data" required>
-                                <option selected>เลือก</option>                                  
-                                <option value='True'>เปิดการแจ้งเตือน</option>
-                                <option value="False">ไม่ต้องแจ้งเตือน</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- จำนวนแจ้งเตือนขั้นต่ำ -->
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="reorder_level">จำนวนแจ้งเตือนขั้นต่ำ </label>
-                            <input type="number"  placeholder="ระบุจำนวนการแจ้งเตือน" step="1" id="reorder_level" name="reorder_level" class="form-control" min="0"  required>
-                        </div>
-                    </div>
-
-                    <!-- รายละเอียดสินค้า -->
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="description">รายละเอียดสินค้า</label>
-                            <textarea id="description" name="description" class="form-control" rows="10"></textarea>
-                        </div>
-                    </div>
+					<!-- Select check_data -->
+					<div class="col-md-12">
+						<div class="card border-primary">
+							<div class="card-body">								
+								<div class="form-group">
+									<label for="check_data">เพิ่มสินค้าเข้าสู่สต๊อกสินค้า</label>
+									<p class="text-muted text-sm"> กำหนดว่าสินค้านี้จะแสดงในหน้าร้านหรือไม่ หากเลือก "เปิดการแจ้งเตือน" ระบบจะแจ้งเตือนเมื่อสินค้าถึงจำนวนที่กำหนด </p>
+									
+									<select class="custom-select rounded-0" id="check_data" name="check_data" required>
+										<option selected>เลือก</option>                                  
+										<option value='True'>เปิดการแจ้งเตือน</option>
+										<option value="False">ไม่ต้องแจ้งเตือน</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
 
 
 
-                    <!-- ปุ่มบันทึก / ยกเลิก -->
-                    <div class="col-md-12 mt-4">
 
-                        <button type="submit" class="btn btn-primary" name='save'><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล</button>
-                        <button type="submit" class="btn btn-primary" name='save-add'><i class="bi bi-file-earmark-plus"></i> บันทึก และ เพิ่มข้อมูลใหม่ </button>
-                        <button type="submit" class="btn btn-primary" name='save-edit'><i class="bi bi-pencil-square"></i> บันทึก และ แก้ใขข้อมูล </button>
-                        <a href="{{ request.META.HTTP_REFERER }}" type="button" class="btn btn-default"><i class="bi bi-x-circle"></i> ยกเลิก </a>
-                    </div>
+					<!-- ปุ่มบันทึก / ยกเลิก -->
+					<div class="col-md-12 mt-4">
 
-                </div>
-            </div>
-        </div>
-    </form>
-    
+						<button type="submit" class="btn btn-primary" name='save'><i class="bi bi-floppy"></i>  &nbsp; บันทึกข้อมูล</button>
+						<button type="submit" class="btn btn-primary" name='save-add'><i class="bi bi-file-earmark-plus"></i> บันทึก และ เพิ่มข้อมูลใหม่ </button>
+						<button type="submit" class="btn btn-primary" name='save-edit'><i class="bi bi-pencil-square"></i> บันทึก และ แก้ใขข้อมูล </button>
+						<a href="{{ request.META.HTTP_REFERER }}" type="button" class="btn btn-default"><i class="bi bi-x-circle"></i> ยกเลิก </a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</form>
+
 </section>
+<script>
+	document.getElementById('image').addEventListener('change', function(event) {
+		const preview = document.getElementById('preview-image');
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				preview.src = e.target.result;
+				preview.style.display = 'block';
+			};
+			reader.readAsDataURL(file);
+		} else {
+			preview.style.display = 'none';
+		}
+	});
+</script>
 {% endblock content %}

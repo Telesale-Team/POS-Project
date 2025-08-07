@@ -49,20 +49,27 @@ class Unit(models.Model):
 
 
 class Product(models.Model):
+    barcode = models.CharField(max_length=255, unique=True, blank=True, null=True) # รหัสบาร์โค้ดของสินค้า
+    image_product = models.ImageField(upload_to='product_images/',default='product_images/image_product.jpg') # รูปภาพของสินค้า
+    name = models.CharField(max_length=255)  # ชื่อของสินค้า
+    description = models.TextField(blank=True, null=True) # คำอธิบายของสินค้า
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True, blank=True) # หมวดหมู่ของสินค้า
+
+    cost = models.DecimalField(max_digits=10, decimal_places=2, default=10) # ราคาต้นทุนของสินค้า
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=15) # ราคาขายของสินค้า
     
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    image_product = models.ImageField(upload_to='product_images/',default='product_images/image_product.jpg')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    stock_quantity = models.IntegerField(default=0)
-    reorder_level = models.IntegerField(default=0)
-    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, related_name='products')
-    unit = models.ForeignKey(Unit, on_delete=models.SET_NULL, null=True, blank=True,default='ชิ้น')
-    check_data = models.BooleanField(default=True)    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    stock_quantity = models.IntegerField(default=100) # จำนวนสินค้าที่มีในสต็อก
+    stock_alert = models.IntegerField(default=2) # จำนวนสินค้าที่จะเตือนเมื่อถึง
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.SET_NULL, null=True) # สถานที่เก็บสินค้า
+    
+    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, related_name='products')  # ผู้จัดจำหน่ายสินค้า
+    unit = models.ForeignKey(Unit, on_delete=models.SET_NULL, null=True, blank=True,default='ชิ้น') # หน่วยของสินค้า
+   
+    date_stamp = models.DateTimeField(auto_now_add=True) # วันที่รับสินค้า
+    updated_at = models.DateTimeField(auto_now=True) # วันที่แก้ไขล่าสุด
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='created_products')
+
+    check_data = models.BooleanField(default=True)  # ใช้สำหรับตรวจสอบข้อมูล
 
     def __str__(self):
         return self.name
@@ -70,6 +77,7 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
+    
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='product_images/')
     caption = models.CharField(max_length=255, blank=True, null=True)

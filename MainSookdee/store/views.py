@@ -5,13 +5,13 @@ import os
 from django.http import JsonResponse
 from django.contrib import messages
 import time
-# Create your views here.
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import segno  # Import Segno for QR code generation
 from pathlib import Path
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 #Product Manament Functions
@@ -184,66 +184,91 @@ def Update_Product(request,product_id):
 	print("NO Sumit Post")
 	return redirect ('product-managment')
 
+def CreateBarcode(product_name):
+		# สร้าง QR Code สำหรับ Product
+		qr_code = segno.make(product_name)
+		qr_code_path = os.path.join(BASE_DIR, 'media', 'qr_codes', f'{product_name}.png')
+		qr_code.save(qr_code_path)
+
+		# บันทึกเส้นทาง QR Code ลงใน Product
+		product = Product.objects.get(name=product_name)
+		product.qr_code = f'qr_codes/{product_name}.png'
+		product.save()
+		# ส่งคืนเส้นทางของ QR Code
+		
+		return qr_code_path
+
+
 def Create_Product (request):
 
 	categorys = Category.objects.all()
 	units = Unit.objects.all()
 	products = Product.objects.all()
 	suppliers = Supplier.objects.all()
+	warehouse = Warehouse.objects.all()
+	# ตรวจสอบว่ามีการส่งข้อมูล POST มาหรือไม่
 
 	if request.method == "POST":
-
 		data = request.POST.copy()
+		barcode = data.get('barcode')
+		image_product = request.FILES.get('image_product')
+		name = data.get('name')
 
-		data_name = data['name']
-		data_category = data['category']
-		data_image = request.FILES.get('image')
-		data_detial = data['description']
-		data_supplier = data['supplier']
-		data_price = data['price']
-		data_saleprice = data['saleprice']
-		data_stock_quantity = data['stock_quantity']
-		data_unit = data['unit']
-		data_reorder_level = data['reorder_level']
-		data_checkData = data['check_data']
-		print('data_category',data_category)
-		print('data_supplier',data_supplier)
-		print('data_checkData',data_checkData)
-		print('data_unit',data_unit)
-		newProduct=Product.objects.update_or_create(
-			name=data_name,
-			defaults={
-				'name':data_name,
-				'category':Category.objects.get(id=data_category),
-			 	'image_product':data_image,
-			 	'description':data_detial,
-			 	'supplier':Supplier.objects.get(id=data_supplier),
-			 	'price':data_price,
-				'cost':data_saleprice,
-			 	'stock_quantity':data_stock_quantity,
-			 	'unit':Unit.objects.get(id=data_unit),
-			 	'reorder_level':data_reorder_level if data_reorder_level else 0,
-			 	'check_data':data_checkData
-				 
-				})
-		messages.success(request,f'บันทึกข้อมูล { data_name } เรียบร้อยแล้ว')
-		newProduct = Product.objects.filter(name=data_name).first()
-		if 'save' in request.POST:
-			return redirect('product-managment')
-		elif 'save-add' in request.POST:
-			return redirect('create-product')
-		elif 'save-edit' in request.POST:
-			return redirect('view-product',newProduct.id)
+		description = data.get('description')
+
+		category = Category.objects.get(id=data.get('category'))
+		cost = data.get('cost')
+		price = data.get('price')
+		stock_quantity = data.get('stock_quantity')
+		stock_alert = data.get('stock_alert')
+		print(data.get('warehouse'))
+
+		warehouse = Warehouse.objects.get(id=data.get('warehouse'))
+		supplier = Supplier.objects.get(id=data.get('supplier'))
+		unit = Unit.objects.get(id=data.get('unit'))
+
+		# ตรวจสอบว่ามีการส่งข้อมูล check_data มาหรือไม่
+		if 'check_data' in data:
+			check_data = True
 		else:
-			return redirect('product-managment')
+			check_data = False
 
+		created_by = request.user  # ใช้ผู้ใช้ที่ล็อกอินอยู่
 
+		product = Product(
+			barcode=barcode,
+			image_product=image_product,
+			name=name,
+			description=description,
+			category=category,
+			cost=cost,
+			price=price,
+			stock_quantity=stock_quantity,
+			stock_alert=stock_alert,
+			warehouse=warehouse,
+			supplier=supplier,
+			unit=unit,
+			check_data=check_data,
+			created_by=created_by
+		)
+		product.save()
+
+		if not image_product:
+			image_product = 'product_images/image_product.jpg'  # กำหนดรูปภาพเริ่มต้นหากไม่มีการอัพโหลด
+		else:
+			image_product = FileSystemStorage().save(image_product.name, image_product)
+
+		# แสดงข้อความสำเร็จ		
+		messages.success(request, f'บันทึกข้อมูล {name} เรียบร้อยแล้ว')
+
+		return redirect('product-managment')    
 
 	context = {
 		"categorys":categorys,
 		"units":units,
 		"products":products,
 		"suppliers":suppliers,
+		"warehouse":warehouse,
 	}
 	return render(request, 'store/add-product.html',context)
 

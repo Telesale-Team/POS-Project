@@ -383,84 +383,136 @@
 									<div class="modal-dialog modal-xl">
 										<div class="modal-content">
 											<div class="modal-header">
-											<h4 class="modal-title">Product Details</h4>
+											<h4 class="modal-title">รายละเอียดสินค้า</h4>
 											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 												<span aria-hidden="true">×</span>
 											</button>
 											</div>
 											<div class="modal-body">
-												<div class="row">
-													<div class="col-md-12">
-														{% if product.image_product %}
-														<div class="card-body p-0">
-															<ul class="users-list clearfix">
-																<li>
-																	<img src="{{ product.image_product.url }}" alt="User Image" style="width:128px;height:128px;">
-																	<h3 class="users-list-name mt-2" href="#"><strong>{{ product.name }}<strong></h3>
-																	<p class="users-list-date description-text">{{ product.id }}</p>
-																	<span class="users-list-date text-muted" >{{ product.category.name }}</span>
+												<div class="row invoice-header">
+													<div class="col-sm-12">
+														<div class="card card-primary card-outline">
+															<div class="card-body box-profile">
+															{% if product.image_product %}
+															<div class="text-center">
+																 <img src="{{ product.image_product.url }}" alt="{{ product.name }}" class="rounded" width="250px" height="250px">
+															</div>
+															{% else %}
+															<div class="text-center">
+																<img class="profile-user-img img-fluid img-circle" src="{% static 'media/product_images/image_product.jpg' %}" alt="User profile picture">
+															</div>
+															{% endif %}
+
+															<h3 class="profile-username text-center">{{ product.name }}</h3>
+
+															<p class="text-muted text-center">{{ product.category}}</p>
+
+															<ul class="list-group list-group-unbordered mb-3">
+																<li class="list-group-item">
+																<b>จำนวนที่ขายไปแล้ว</b> <a class="float-right">1,322</a>
+																</li>
+																<li class="list-group-item">
+																<b>จำนวนสต๊อกสินค้า</b> <a class="float-right">543</a>
+																</li>
+																<li class="list-group-item">
+																<b>กำไรรวม</b> <a class="float-right">13,287</a>
 																</li>
 															</ul>
-															<!-- /.users-list -->
+
+															<a href="#" class="btn btn-primary btn-block"><b>แก้ใขข้อมูลสินค้า</b></a>
+															</div>
+															<!-- /.card-body -->
 														</div>
-														{% else %}
-															<i class="bi bi-image-fill"></i>
-														{% endif %}
+														<!-- /.card -->
 													</div>
-													<div class="col-md-12">
-														<p class="text-muted">รายละเอียด: {{ product.description }}</p>
-														<p class="text-muted">บาร์โค้ด: {{ product.barcode }}</p>
-														<p class="text-muted">ต้นทุน: {{ product.cost }} /{{ product.unit }}</p>
-														<p class="text-muted	">ราคาขาย: {{ product.price }} /{{ product.unit}} </p>
-														<p class="text-muted	">จำนวนคงเหลือ: {{ product.stock_quantity }} {{ product.unit }}</p>	
-														
+													<!-- /.col -->
 												</div>
+												<!-- Main content -->
+												<div class="row invoice-info">
+													<div class="col-lg-4 invoice-col">
+														<address>
+															<strong>หมวดหมู่: </strong><span class="text-muted float-right">{{ product.category }}<span><br>
+															<strong>ชื่อ: </strong><span class="text-muted float-right ">{{ product.name }}</span><br>						
+															<strong>รายละเอียด: </strong><p class="text-muted ">{{ product.description| truncatechars:100}}</p>
+															<strong>ราคาขาย: </strong><span class="text-muted float-right ">฿ {{ product.price }}</span><br><br>
+															<strong>ราคาต้นทุน:</strong><span class="text-muted float-right ">฿ {{ product.cost }}</span><br><br>
+															<strong>จำนวนสินค้า:</strong><span class="text-muted float-right ">฿ {{ product.stock_quantity}} {{ product.unit}} </span><br><br>
+															<strong>กำไรต่อชิ้น:</strong><span class="text-muted float-right ">฿ {{ product.profit_per_item }} </span><br><br>
+															<strong> ผู้จัดทำรายการ </strong><span class="text-muted float-right "></span><br>
+															
+															<div class="user-block mt-2">																 
+																<img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image">
+																<span class="username"><a href="#">{{product.created_by}}</a></span>
+																<span class="description">Product Manager</span>
+															</div>
+														</address>
+													</div>
+													<!-- /.col -->
+													<div class="col-lg-4 invoice-col">
+													<b>ผู้จัดจำหน่าย</b>
+													<br>
+													<address>
+														<p class="text-muted">{{ product.supplier.name }}</p>
 
-												<!-- Product Details-->												 
-												<div class="row">
-													<div class="col-md-6">
-													{% if product.image_product %}
-														<img src="{{ product.image_product.url }}" class="img-fluid" alt="{{ product.name }}" style="width:500px;height:500px;">
+														<b>ผู้ติดต่อ </b>
+														<p class="text-muted">{{ product.supplier.contact_person}}</p>
+
+														<b>เบอร์โทรศัพท์</b>
+														<p class="text-muted">{{product.supplier.phone_number}}</p>
+
+														<b>Email </b>
+														<p class="text-muted">{{ product.supplier.email}}</p>
+
+														<b>ที่อยู่:</b>														
+														<p class="text-muted">{{ product.supplier.address}}</p>
+
+														<b>จังหวัด:</b>
+														<p class="text-muted">{{ product.supplier.provide}}</p>
+
+														<b>รหัสไปรษณีย์:</b>
+														<p class="text-muted">{{ product.supplier.code}}</p>
+
+														<b>ประเทศ:</b>
+														<p class="text-muted">{{ product.supplier.email}}</p>	
+														<b>เว็บไซต์:</b>
+														<p class="text-muted">{{ product.supplier.website}}</p>
+														<b>หมายเหตุ:</b>
+														<p class="text-muted">{{ product.supplier.note}}</p>	
+													</address>
+													</div>
+													<!-- /.col -->
+													<div class="col-lg-4 invoice-col">
+													<b>รหัสสินค้า</b> {{ product.barcode }}<br>
+													<br>
+													<b>Order ID:</b> 4F3S8J<br>
+													<b>จัดส่งเมื่อ:</b> {{ product.update }}<br>
+													<b>วันหมดอายุ:</b> {{ product.expiry_date }}<br>
+													<b>สถานะการจัดส่ง:</b>
+													{% if product.is_delivered %}
+														<span class="text-success">จัดส่งแล้ว</span>
 													{% else %}
-														<i class="bi bi-image-fill"></i>
+														<span class="text-danger">ยังไม่จัดส่ง</span>
 													{% endif %}	
+													<br>
+													<b>สถานะการชำระเงิน:</b>
+													{% if product.is_paid %}
+														<span class="text-success">ชำระเงินแล้ว</span>
+													{% else %}
+														<span class="text-danger">ยังไม่ชำระเงิน</span>
+													{% endif %}
+													<br>
+													<b>สถานะ:</b> 
+													{% if product.stock_alert > product.stock_quantity %}
+														<span class="text-danger">สินค้าค้าใกล้จะหมดสต๊อก</span>
+													{% else %}
+														<span class="text-success">สินค้าสต๊อกปกติ </span>
+													{% endif %}
+													<br>
+
 													</div>
-
-													<div class="col-md-6">
-														<p class="text-muted">SKU: {{ product.id }}</p>
-														<p class="text-muted">หมวดหมู่: {{ product.category.name }}</p>
-														<p class="text-muted">ต้นทุน: {{ product.cost }} /{{ product.unit}}</p>
-														<p class="text-muted">ราคาขาย: {{ product.price }} /{{ product.unit}} </p>
-														<p class="text-muted">จำนวนคงเหลือ: {{ product.stock_quantity }} {{ product.unit }}</p>
-														<p class="text-muted">สถานะ: 
-															{% if product.stock_quantity <= product.min_stock %}
-																<span class="text-danger">ใกล้หมด</span>
-															{% else %}
-																<span class="text-success">เพียงพอ</span>
-															{% endif %}	
-														</p>
-														<p class="text-muted">วันที่เพิ่ม: {{ product.created_at|date:"d M Y" }}</p>
-														<p class="text-muted">วันที่แก้ไข: {{ product.updated_at|date:"d M Y" }}</p>
-														<p class="text-muted">สถานะการขาย: 
-															{% if product.is_active %}
-																<span class="text-success">เปิดขาย</span>
-															{% else %}
-																<span class="text-danger">ปิดขาย</span>
-															{% endif %}
-														</p>
-														<p class="text-muted">รายละเอียด: {{ product.description }}</p>
-
-
-													
+													<!-- /.col -->
 												</div>
-												<!-- Endproduct -->
-
-											</div>
-											<div class="modal-footer justify-content-between">
-												
-															<a href="{% url 'edit-product' product.id %}" class="btn btn-warning"><i class="fas fa-edit"></i> แก้ไขข้อมูล</a>
-															<a href="{% url 'delete-product' product.id %}" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete{{product.id}}"><i class="fas fa-trash"></i> ลบข้อมูล</a>
-
+												<!-- /.row -->
 											</div>
 										</div>
 									<!-- /.modal-content -->

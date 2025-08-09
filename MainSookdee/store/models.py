@@ -68,11 +68,17 @@ class Product(models.Model):
     date_stamp = models.DateTimeField(auto_now_add=True) # วันที่รับสินค้า
     updated_at = models.DateTimeField(auto_now=True) # วันที่แก้ไขล่าสุด
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='created_products')
-
+    rating = models.PositiveIntegerField(default=5)  # จำนวนรีวิวที่ได้รับ
     check_data = models.BooleanField(default=True)  # ใช้สำหรับตรวจสอบข้อมูล
 
     def __str__(self):
         return self.name
+    
+    def profit_per_item(self):
+        """คำนวณกำไรต่อชิ้นของสินค้า"""
+        if self.price and self.cost:
+            return self.price - self.cost
+        return 0
 
 
 

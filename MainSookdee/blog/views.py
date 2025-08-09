@@ -4,8 +4,8 @@ from store.models import *
 def Blogs(request):
 	
 	categorys = Category.objects.all()
-	products = Product.objects.all()
-	print(categorys)
+	products = Product.objects.all().order_by('-date_stamp')[:10]  # แสดงสินค้าล่าสุด 8 รายการ
+
 	context = {
 		"categorys": categorys,
 		"products": products,

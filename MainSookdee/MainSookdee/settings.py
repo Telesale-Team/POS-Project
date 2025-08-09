@@ -26,14 +26,14 @@ INSTALLED_APPS = [
 	'django.contrib.contenttypes',       
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-
+    'django.contrib.humanize',  # สำหรับการแสดงผลที่เป็นมิตรกับผู้ใช้
 	'blog',
 	'staff',
 	'store',
 	'dashboard',
 	'pos',
 	'invoice',
-	'ChatApp',
+'ChatApp',
 
 
 ]
